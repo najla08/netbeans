@@ -188,7 +188,7 @@ public class edit extends javax.swing.JFrame {
         Bmenu1.setText("إضافة مقرر");
         Bmenu1.setBorder(null);
         Bmenu1.setBorderPainted(false);
-        Bmenu1.setBounds(new java.awt.Rectangle(1, 0, 0, 0));
+        Bmenu1.setBounds(new java.awt.Rectangle(0, 0, 0, 0));
 
         Bmenu2.setText("إضافة محاضرة");
         Bmenu2.setBorder(null);

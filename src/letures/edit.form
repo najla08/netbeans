@@ -306,7 +306,7 @@
         </Property>
         <Property name="borderPainted" type="boolean" value="false"/>
         <Property name="bounds" type="java.awt.Rectangle" editor="org.netbeans.beaninfo.editors.RectangleEditor">
-          <Rectangle value="[1, 0, 0, 0]"/>
+          <Rectangle value="[0, 0, 0, 0]"/>
         </Property>
       </Properties>
     </Component>
