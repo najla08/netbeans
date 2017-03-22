@@ -189,6 +189,11 @@ public class addLecture extends javax.swing.JFrame {
         Bmenu4.setText("إضافة مقرر");
         Bmenu4.setBorder(null);
         Bmenu4.setBorderPainted(false);
+        Bmenu4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Bmenu4ActionPerformed(evt);
+            }
+        });
 
         Bmenu5.setText("إضافة محاضرة");
         Bmenu5.setBorder(null);
@@ -258,6 +263,12 @@ public class addLecture extends javax.swing.JFrame {
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void Bmenu4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bmenu4ActionPerformed
+         new addSubject().setVisible(true);
+        this.dispose();
+                // TODO add your handling code here:
+    }//GEN-LAST:event_Bmenu4ActionPerformed
 
     /**
      * @param args the command line arguments

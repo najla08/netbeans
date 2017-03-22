@@ -5,6 +5,12 @@
  */
 
 package letures;
+import javax.swing.JLabel;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -15,10 +21,38 @@ public class edit extends javax.swing.JFrame {
     /**
      * Creates new form listen
      */
+    Connection con=null;
+     ResultSet rs=null;
+     PreparedStatement pst=null;
     public edit() {
         initComponents();
     }
-
+private void search(){
+     try
+    {
+          String subject=Txtsrch.getText();
+            String lName;
+      String sql="select * from Lecture where SID IN (select SID from Subjects where SName like '"+subject+"%' OR Year like '"+subject+"%');";  
+      
+       pst=con.prepareStatement(sql);
+       rs=pst.executeQuery();
+       int i=0;
+      
+       while(rs.next())
+            {
+               JLabel j1i = new JLabel(); 
+                 lName=rs.getString("LName");
+                  LblLec.setText(lName);
+            }//end while-loop   
+//         pst.executeUpdate();
+            
+         
+    }
+    catch( SQLException ex ){
+        JOptionPane.showMessageDialog(null, ex);
+        
+    }
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -45,10 +79,10 @@ public class edit extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        Txtsrch = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        LblLec = new javax.swing.JLabel();
         Bmenu1 = new javax.swing.JButton();
         Bmenu2 = new javax.swing.JButton();
         Bmenu3 = new javax.swing.JButton();
@@ -112,7 +146,7 @@ public class edit extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(8, Short.MAX_VALUE)
+                .addContainerGap(14, Short.MAX_VALUE)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -135,18 +169,21 @@ public class edit extends javax.swing.JFrame {
 
         jLabel1.setText("بحث");
 
-        jTextField6.setText("by year,subject");
-        jTextField6.addActionListener(new java.awt.event.ActionListener() {
+        Txtsrch.setText("by year,subject");
+        Txtsrch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField6ActionPerformed(evt);
+                TxtsrchActionPerformed(evt);
             }
         });
 
         jButton1.setText("بحث");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("نتائج البحث");
-
-        jLabel4.setText("xxxx");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -156,7 +193,7 @@ public class edit extends javax.swing.JFrame {
                 .addGap(195, 195, 195)
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Txtsrch, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
                 .addContainerGap(111, Short.MAX_VALUE))
@@ -167,7 +204,7 @@ public class edit extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addGap(62, 62, 62))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
+                        .addComponent(LblLec)
                         .addGap(83, 83, 83))))
         );
         jPanel3Layout.setVerticalGroup(
@@ -176,19 +213,18 @@ public class edit extends javax.swing.JFrame {
                 .addGap(37, 37, 37)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Txtsrch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
                 .addGap(40, 40, 40)
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel4)
+                .addComponent(LblLec)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         Bmenu1.setText("إضافة مقرر");
         Bmenu1.setBorder(null);
         Bmenu1.setBorderPainted(false);
-        Bmenu1.setBounds(new java.awt.Rectangle(0, 0, 0, 0));
 
         Bmenu2.setText("إضافة محاضرة");
         Bmenu2.setBorder(null);
@@ -211,9 +247,7 @@ public class edit extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Bmenu1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(Bmenu2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, 0)
-                        .addComponent(Bmenu3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(Bmenu3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 6, Short.MAX_VALUE))))
@@ -238,9 +272,14 @@ public class edit extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
+    private void TxtsrchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtsrchActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField6ActionPerformed
+    }//GEN-LAST:event_TxtsrchActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+con=connection.ConnerDb();//to start connection
+search();// TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -284,11 +323,12 @@ public class edit extends javax.swing.JFrame {
     private javax.swing.JButton Bmenu1;
     private javax.swing.JButton Bmenu2;
     private javax.swing.JButton Bmenu3;
+    private javax.swing.JLabel LblLec;
+    private javax.swing.JTextField Txtsrch;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -298,7 +338,6 @@ public class edit extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JTextField jTextField6;
     private java.awt.Menu menu1;
     private java.awt.Menu menu2;
     private java.awt.Menu menu3;
