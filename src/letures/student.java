@@ -26,6 +26,8 @@ public class student extends javax.swing.JFrame {
      Connection con=null;
      ResultSet rs=null;
      PreparedStatement pst=null;
+     public static String email;
+     public static String pass;
     
     public student() {
         initComponents();
@@ -39,23 +41,24 @@ public class student extends javax.swing.JFrame {
             String sql="select DISTINCT Year from Subjects";
             pst=con.prepareStatement(sql);
             rs=pst.executeQuery();
-            
-            while(rs.next())
+           
+            if(rs.isBeforeFirst()){
+                while(rs.next())
             {
                 String years=rs.getString("Year");
                 year.addItem(years);          
-            }//end while-loop    
+            }//end while-loop   
+            }else{
+                year.addItem("لا يوجد اتصال بقاعدة البيانات");
+            }
+         
         }//end try
         catch(Exception e)
         {
             JOptionPane.showMessageDialog(null, e);
         }
+        
     }
-       
-        public void close(){
-    WindowEvent WinclosingEvent =new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
-    Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(WinclosingEvent);
-}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -68,19 +71,18 @@ public class student extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        emailF = new javax.swing.JTextField();
+        signin = new javax.swing.JButton();
+        forgetPassword = new javax.swing.JButton();
+        passf = new javax.swing.JPasswordField();
         jPanel2 = new javax.swing.JPanel();
         main = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         year = new javax.swing.JComboBox();
         level = new javax.swing.JComboBox();
-        jButton5 = new javax.swing.JButton();
+        go = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 204, 153));
@@ -89,26 +91,41 @@ public class student extends javax.swing.JFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/letures/---------2.png"))); // NOI18N
 
-        jTextField1.setText("البريد الالكتروني");
+        emailF.setText("البريد الالكتروني");
 
-        jTextField2.setText("كلمة المرور");
-
-        jButton3.setText("تسجيل الدخول");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        signin.setText("تسجيل الدخول");
+        signin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                signinMousePressed(evt);
+            }
+        });
+        signin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                signinActionPerformed(evt);
             }
         });
 
-        jButton4.setBackground(new java.awt.Color(255, 255, 255));
-        jButton4.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(0, 51, 153));
-        jButton4.setText("هل نسيت كلمة المرور؟ ");
-        jButton4.setBorderPainted(false);
-        jButton4.setContentAreaFilled(false);
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        forgetPassword.setBackground(new java.awt.Color(255, 255, 255));
+        forgetPassword.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        forgetPassword.setForeground(new java.awt.Color(0, 51, 153));
+        forgetPassword.setText("هل نسيت كلمة المرور؟ ");
+        forgetPassword.setBorderPainted(false);
+        forgetPassword.setContentAreaFilled(false);
+        forgetPassword.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                forgetPasswordMouseClicked(evt);
+            }
+        });
+        forgetPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                forgetPasswordActionPerformed(evt);
+            }
+        });
+
+        passf.setText("jPasswordField1");
+        passf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passfActionPerformed(evt);
             }
         });
 
@@ -118,13 +135,13 @@ public class student extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
-                .addComponent(jButton3)
+                .addComponent(signin)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField2))
+                    .addComponent(forgetPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(passf))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(emailF, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 137, Short.MAX_VALUE)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -135,12 +152,12 @@ public class student extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jTextField1)
-                        .addComponent(jTextField2))
-                    .addComponent(jButton3))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(emailF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(passf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(signin))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(forgetPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 204, 153));
@@ -155,31 +172,17 @@ public class student extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(255, 204, 153));
-        jButton2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton2.setText("المحاضرات");
-        jButton2.setContentAreaFilled(false);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(main))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(main, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(main, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
@@ -188,9 +191,20 @@ public class student extends javax.swing.JFrame {
 
         jLabel3.setText("المستوى");
 
+        year.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                yearActionPerformed(evt);
+            }
+        });
+
         level.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4" }));
 
-        jButton5.setText("اذهب");
+        go.setText("اذهب");
+        go.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                goMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -209,7 +223,7 @@ public class student extends javax.swing.JFrame {
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(263, 263, 263))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jButton5)
+                        .addComponent(go)
                         .addGap(362, 362, 362))))
         );
         jPanel3Layout.setVerticalGroup(
@@ -224,7 +238,7 @@ public class student extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(level, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(36, 36, 36)
-                .addComponent(jButton5)
+                .addComponent(go)
                 .addContainerGap(202, Short.MAX_VALUE))
         );
 
@@ -249,24 +263,82 @@ public class student extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void signinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signinActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_signinActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void forgetPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forgetPasswordActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_forgetPasswordActionPerformed
 
     private void mainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainActionPerformed
-                        student Shome=new student();
-                        Shome.setVisible(true);
-                        close();
+                           new student().setVisible(true);
+                            this.dispose();
     }//GEN-LAST:event_mainActionPerformed
 
+    private void signinMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_signinMousePressed
+        email=emailF.getText();
+        pass=passf.getText();
+        
+        if(!email.isEmpty()&& !pass.isEmpty()){
+               String sql="Select Email,Password from [Lectures].[dbo].[User] where Email='"+email+"' AND Password= '"+pass+"' ";
+              
+        try{
+           pst=con.prepareStatement(sql);
+           rs= pst.executeQuery();
+           
+           if(rs.isBeforeFirst()){
+            new edit().setVisible(true);
+            this.dispose();
+           
+           }else{
+                      JOptionPane.showMessageDialog(null, "البريد الالكتروني أو كلمة المرور خاطئة يرجى إعادة التحقق والمحاولة مرة أخرى ", "Error",JOptionPane.ERROR_MESSAGE );
+           }
+            
+                    
+              }catch(Exception e){
+        System.out.printf(e.toString());
+        }  
+
+        }else{
+      
+                    JOptionPane.showMessageDialog(null, "البريد الالكتروني أو كلمة المرور فارغة يرجى إعادة التحقق والمحاولة مرة أخرى ", "Error",JOptionPane.ERROR_MESSAGE );
+
+        }
+      
+    }//GEN-LAST:event_signinMousePressed
+
+    private void passfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passfActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_passfActionPerformed
+
+    private void forgetPasswordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_forgetPasswordMouseClicked
+
+         new forgetPass().setVisible(true);
+        this.dispose();
+
+    }//GEN-LAST:event_forgetPasswordMouseClicked
+
+    private void yearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yearActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_yearActionPerformed
+
+    private void goMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_goMouseClicked
+
+        //Check if he select items 
+        if(level.getSelectedIndex() == -1 || year.getSelectedIndex() == -1){
+    JOptionPane.showMessageDialog(null, "يجب عليك اختيار العام الدراسي والمستوى", "Error",JOptionPane.ERROR_MESSAGE );    
+        }else{
+            String yearselect = year.getSelectedItem().toString();
+            String levelselect = level.getSelectedItem().toString();
+
+            new listen(yearselect,levelselect).setVisible(true);
+            this.dispose();
+        }
+
+    }//GEN-LAST:event_goMouseClicked
+    
+  
     /**
      * @param args the command line arguments
      */
@@ -303,20 +375,19 @@ public class student extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JTextField emailF;
+    private javax.swing.JButton forgetPassword;
+    private javax.swing.JButton go;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JComboBox level;
     private javax.swing.JButton main;
+    private javax.swing.JPasswordField passf;
+    private javax.swing.JButton signin;
     private javax.swing.JComboBox year;
     // End of variables declaration//GEN-END:variables
 }
