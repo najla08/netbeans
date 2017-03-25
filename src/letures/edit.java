@@ -5,12 +5,15 @@
  */
 
 package letures;
+import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
 import javax.swing.JLabel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
+import net.proteanit.sql.DbUtils;
 
 /**
  *
@@ -21,29 +24,63 @@ public class edit extends javax.swing.JFrame {
     /**
      * Creates new form listen
      */
+    
     Connection con=null;
      ResultSet rs=null;
+     ResultSet rs2=null;
      PreparedStatement pst=null;
+     PreparedStatement pst2=null;
     public edit() {
         initComponents();
+        con=connection.ConnerDb();//to start connection
+//search();
+    }
+    private void tbl(){
+        try{
+          String subject=Txtsrch.getText();
+            String lName;
+            String col="المحاضرات";
+      String sql="select LName AS'"+col+"' from Lecture where SID IN (select SID from Subjects where SName like '"+subject+"%' OR Year like '"+subject+"%');";  //"+subject+"
+      //String sql1="Select COUNT(*)A total from Lecture where SID IN (select SID from Subjects where SName like'g%' OR Year like '"+subject+"%');";
+       pst=con.prepareStatement(sql);
+      // pst2=con.prepareStatement(sql1);
+      // rs2=pst2.executeQuery();
+       rs=pst.executeQuery();
+       Tlec.setModel(DbUtils.resultSetToTableModel(rs));
+        }
+        catch( SQLException ex ){
+        JOptionPane.showMessageDialog(null, ex);
+        
+    }
     }
 private void search(){
      try
     {
+        int count;
+         
           String subject=Txtsrch.getText();
             String lName;
-      String sql="select * from Lecture where SID IN (select SID from Subjects where SName like '"+subject+"%' OR Year like '"+subject+"%');";  
-      
+      String sql="select * from Lecture where SID IN (select SID from Subjects where SName like 'g%' OR Year like '"+subject+"%');";  //"+subject+"
+      String sql1="Select COUNT(*)AS total from Lecture where SID IN (select SID from Subjects where SName like'g%' OR Year like '"+subject+"%');";
        pst=con.prepareStatement(sql);
+       pst2=con.prepareStatement(sql1);
+       rs2=pst2.executeQuery();
        rs=pst.executeQuery();
        int i=0;
-      
-       while(rs.next())
+       if(rs2.next()){
+            count=rs2.getInt("total");
+            while(rs.next())
             {
-               JLabel j1i = new JLabel(); 
+         
                  lName=rs.getString("LName");
-                  LblLec.setText(lName);
+              
+//                  LblLec.setText(lName);
+                  
+                  i++;
             }//end while-loop   
+       }
+//      JLabel[] LblLec=new JLabel[]; 
+       
 //         pst.executeUpdate();
             
          
@@ -83,6 +120,8 @@ private void search(){
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         LblLec = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        Tlec = new javax.swing.JTable();
         Bmenu1 = new javax.swing.JButton();
         Bmenu2 = new javax.swing.JButton();
         Bmenu3 = new javax.swing.JButton();
@@ -122,7 +161,7 @@ private void search(){
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(585, Short.MAX_VALUE)
+                .addContainerGap(601, Short.MAX_VALUE)
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -164,7 +203,7 @@ private void search(){
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 210, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         jLabel1.setText("بحث");
@@ -185,6 +224,23 @@ private void search(){
 
         jLabel3.setText("نتائج البحث");
 
+        Tlec.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "المحاضرات"
+            }
+        ));
+        Tlec.setColumnSelectionAllowed(true);
+        Tlec.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TlecMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(Tlec);
+        Tlec.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -196,16 +252,18 @@ private void search(){
                 .addComponent(Txtsrch, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
-                .addContainerGap(111, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(457, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(91, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(62, 62, 62))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(LblLec)
-                        .addGap(83, 83, 83))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(43, 43, 43))))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -217,9 +275,14 @@ private void search(){
                     .addComponent(jButton1))
                 .addGap(40, 40, 40)
                 .addComponent(jLabel3)
-                .addGap(18, 18, 18)
-                .addComponent(LblLec)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(171, 171, 171)
+                        .addComponent(LblLec))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(195, Short.MAX_VALUE))
         );
 
         Bmenu1.setText("إضافة مقرر");
@@ -250,7 +313,7 @@ private void search(){
                     .addComponent(Bmenu3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 6, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -278,8 +341,13 @@ private void search(){
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 con=connection.ConnerDb();//to start connection
-search();// TODO add your handling code here:
+//search();// TODO add your handling code here:
+tbl();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void TlecMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TlecMouseClicked
+JOptionPane.showMessageDialog(null, "gjdj");        // TODO add your handling code here:
+    }//GEN-LAST:event_TlecMouseClicked
 
     /**
      * @param args the command line arguments
@@ -315,6 +383,7 @@ search();// TODO add your handling code here:
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new edit().setVisible(true);
+                
             }
         });
     }
@@ -324,6 +393,7 @@ search();// TODO add your handling code here:
     private javax.swing.JButton Bmenu2;
     private javax.swing.JButton Bmenu3;
     private javax.swing.JLabel LblLec;
+    private javax.swing.JTable Tlec;
     private javax.swing.JTextField Txtsrch;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
@@ -338,6 +408,7 @@ search();// TODO add your handling code here:
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
     private java.awt.Menu menu1;
     private java.awt.Menu menu2;
     private java.awt.Menu menu3;
