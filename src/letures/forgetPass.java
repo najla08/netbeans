@@ -11,7 +11,15 @@ import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Properties;
 import javax.swing.JOptionPane;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.swing.*;
 
 /**
  *
@@ -171,6 +179,11 @@ public class forgetPass extends javax.swing.JFrame {
                 sendMouseClicked(evt);
             }
         });
+        send.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sendActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -277,6 +290,51 @@ public class forgetPass extends javax.swing.JFrame {
         
 
     }//GEN-LAST:event_sendMouseClicked
+
+    private void sendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendActionPerformed
+        try{
+        
+        Properties props=new Properties();
+
+        props.put("mail.smtp.auth","true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        
+        String e=UEmail.getText();
+        String sql="select Password from User where Email='"+e+"'";
+       pst=con.prepareStatement(sql);
+         rs=pst.executeQuery();
+        if(rs.next()){
+          final String Pass=rs.getString("Password");
+            final String username="najlaaltaleb@gmail.com";
+            final String password="Hassan08";
+            final String to=UEmail.getText();
+            final String from="MRFNSupportTeam";
+            final String subject="MRFN Team";
+            final String text="Hello This is your Password "+Pass.trim()+"Thanks, Mrfn Support Team";
+            
+                 Session session = Session.getDefaultInstance(props,new EmailSender(username, password));
+             try{
+                   Message message=new MimeMessage(session);
+                   message.setFrom(new InternetAddress(from));
+                   message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(to));
+                   message.setSubject(subject);
+                   message.setText(text);
+                   Transport.send(message);
+                   JOptionPane.showMessageDialog(null, "We Send you an Email, please Check your Email ");
+                 
+                        }catch(MessagingException f){
+                                 throw  new  RuntimeException(f);
+                                 }
+        }//end if  check existing user
+        else{
+                 JOptionPane.showMessageDialog(null, "you enter wrong Email");
+        }
+        
+        }catch(Exception e){}
+
+    }//GEN-LAST:event_sendActionPerformed
     
   
     /**

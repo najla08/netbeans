@@ -6,17 +6,80 @@
 
 package letures;
 
-/**
- *
- * @author Najla
- */
+import java.io.File;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Map;
+import java.util.TreeMap;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+
 public class editLecture extends javax.swing.JFrame {
 
-    /**
-     * Creates new form listen
-     */
+    String filename;
+    private TreeMap <Integer, String> categoryMap = new TreeMap<Integer, String>();
+
+     Connection con=null;
+     ResultSet rs=null;
+     PreparedStatement pst=null;
+     int LecId=1002;
+     
     public editLecture() {
-        initComponents();
+           initComponents();
+        con=connection.ConnerDb();
+                    fillcomboBox();
+
+        try{
+        String sql="select SID,LName,FileLocation from Lecture where LID="+LecId+" ";
+        
+        pst=con.prepareStatement(sql);
+        rs=pst.executeQuery();
+        rs.next();
+        String LName=rs.getString("LName");
+        int sid=rs.getInt("SID");
+        sql="Select SName from Subjects Where SID="+sid+"";
+        pst=con.prepareStatement(sql);
+        rs=pst.executeQuery();
+        rs.next();
+        String sname=rs.getString("SName");
+       
+        lectureName.setText(LName);
+        subject.setSelectedItem(sname);
+        
+        }catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+            
+       private void fillcomboBox()
+    {
+        try{
+            String sql="select SID,SName from [Lectures].[dbo].Subjects";
+            pst=con.prepareStatement(sql);
+            rs=pst.executeQuery();
+           
+            if(rs.isBeforeFirst()){
+                while(rs.next())
+            {
+                String courses=rs.getString("SName");
+                Integer id=rs.getInt("SID");
+                subject.addItem(courses);  
+                categoryMap.put(rs.getInt("SID"), courses);
+
+            }//end while-loop   
+            }else{
+                subject.addItem("لا يوجد اتصال بقاعدة البيانات");
+            }
+         
+        }//end try
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        
     }
 
     /**
@@ -46,12 +109,13 @@ public class editLecture extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        lectureName = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        update = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        subject = new javax.swing.JComboBox<String>();
+        Jattach = new javax.swing.JTextField();
         Bmenu4 = new javax.swing.JButton();
         Bmenu5 = new javax.swing.JButton();
         Bmenu6 = new javax.swing.JButton();
@@ -117,32 +181,35 @@ public class editLecture extends javax.swing.JFrame {
 
         jLabel3.setText("المقرر");
 
-        jTextField1.setText("title");
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        lectureName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-
-        jTextField2.setText("subject");
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                lectureNameActionPerformed(evt);
             }
         });
 
         jLabel4.setText("ملف المحاضرة");
 
-        jButton1.setText("تعديل");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        update.setText("تعديل");
+        update.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                updateActionPerformed(evt);
             }
         });
 
         jButton2.setText("اضافة ملف");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("حذف");
+
+        subject.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subjectActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -150,24 +217,28 @@ public class editLecture extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(141, 141, 141)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(subject, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(lectureName, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel1))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(25, 25, 25)
+                                .addComponent(update, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(Jattach, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton2)))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))))
-                .addContainerGap(88, Short.MAX_VALUE))
+                        .addComponent(jLabel4)))
+                .addGap(0, 88, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -175,19 +246,20 @@ public class editLecture extends javax.swing.JFrame {
                 .addGap(37, 37, 37)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lectureName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(subject, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
-                .addGap(55, 55, 55)
+                    .addComponent(Jattach, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton3))
+                    .addComponent(jButton3)
+                    .addComponent(update))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -252,17 +324,53 @@ public class editLecture extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
+        try{
+          
+            int id;
+        String lN=lectureName.getText();
+            String coursename=(String)subject.getSelectedItem();
+            id=getKeyForValue(coursename);
+           String sql1="select SID From Subjects Where SID = "+id+" ";
+           pst=con.prepareStatement(sql1);
+           rs=pst.executeQuery();
+                      if(rs.next()){
+                              Integer sid=rs.getInt(1);
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+       String sql=  "UPDATE [Lectures].[dbo].Lecture SET LName ='"+lN+"' , FileLocation ='"+filename+"' , SID ="+sid+"  WHERE LID='"+LecId+"'";
+          pst=con.prepareStatement(sql);
+            rs=pst.executeQuery();
+                      }
+      
+        
+        }catch(Exception n){
+            
+            JOptionPane.showMessageDialog(null, n);
+        }
+    }//GEN-LAST:event_updateActionPerformed
+    private int getKeyForValue(String value) {
+    for (Map.Entry<Integer, String> entry : categoryMap.entrySet()) {
+         if (entry.getValue().equals(value)) {
+             return entry.getKey();
+         }
+     }
+    return 0;
+}
+    private void lectureNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lectureNameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_lectureNameActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void subjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subjectActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_subjectActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+ JFileChooser chooser=new JFileChooser();        // TODO add your handling code here:
+ chooser.showOpenDialog(null);
+ File v=chooser.getSelectedFile();
+  filename=v.getAbsolutePath();
+ Jattach.setText(filename);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -309,7 +417,7 @@ public class editLecture extends javax.swing.JFrame {
     private javax.swing.JButton Bmenu4;
     private javax.swing.JButton Bmenu5;
     private javax.swing.JButton Bmenu6;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JTextField Jattach;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
@@ -323,13 +431,14 @@ public class editLecture extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField lectureName;
     private java.awt.Menu menu1;
     private java.awt.Menu menu2;
     private java.awt.Menu menu3;
     private java.awt.Menu menu4;
     private java.awt.MenuBar menuBar1;
     private java.awt.MenuBar menuBar2;
+    private javax.swing.JComboBox<String> subject;
+    private javax.swing.JButton update;
     // End of variables declaration//GEN-END:variables
 }

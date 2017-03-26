@@ -6,12 +6,18 @@
 
 package letures;
 
-import java.awt.Toolkit;
-import java.awt.event.WindowEvent;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Map;
+import java.util.TreeMap;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javax.swing.JOptionPane;
+import net.proteanit.sql.DbUtils;
+
 
 /**
  *
@@ -22,12 +28,18 @@ public class listen extends javax.swing.JFrame {
     /**
      * Creates new form listen
      */
-    
      Connection con=null;
      ResultSet rs=null;
      PreparedStatement pst=null;
      public static String Year;
+     public static String url2=null;
+     public static Media m;
+     public static MediaPlayer mediaPlayer;
+
+
      public static Integer Level;
+     private TreeMap <Integer, String> categoryMap = new TreeMap<Integer, String>();
+
     
     public listen(String y,String l) {
         initComponents();
@@ -40,8 +52,10 @@ public class listen extends javax.swing.JFrame {
     
        private void fillcomboBox()
     {
+
         try{
-            String sql="select DISTINCT SName from Subjects where Level='"+Level+"' AND Year='"+Year+"'";
+            
+            String sql="select DISTINCT SName, SID from Subjects where Level='"+Level+"' AND Year='"+Year+"'";
             pst=con.prepareStatement(sql);
             rs=pst.executeQuery();
             
@@ -49,7 +63,10 @@ public class listen extends javax.swing.JFrame {
                    while(rs.next())
             {
                 String courses=rs.getString("SName");
-                course.addItem(courses);          
+                Integer id=rs.getInt("SID");
+                course.addItem(courses);
+                categoryMap.put(rs.getInt("SID"), courses);
+
             }//end while-loop  
             }
          
@@ -64,11 +81,7 @@ public class listen extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, e);
         }
     }
-       
-        public void close(){
-    WindowEvent WinclosingEvent =new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
-    Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(WinclosingEvent);
-}
+ 
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -90,6 +103,13 @@ public class listen extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         course = new javax.swing.JComboBox();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        lectureInfo = new javax.swing.JTable();
+        go = new javax.swing.JButton();
+        stop = new javax.swing.JButton();
+        puse = new javax.swing.JButton();
+        play = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 204, 153));
@@ -134,7 +154,7 @@ public class listen extends javax.swing.JFrame {
                     .addComponent(jTextField2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 137, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -178,28 +198,96 @@ public class listen extends javax.swing.JFrame {
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setPreferredSize(new java.awt.Dimension(800, 353));
 
         jLabel1.setText("المقرر");
+
+        course.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                courseMouseClicked(evt);
+            }
+        });
+
+        lectureInfo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lectureInfoMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(lectureInfo);
+
+        go.setText("اذهب");
+        go.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                goActionPerformed(evt);
+            }
+        });
+
+        stop.setText("إيقاف");
+        stop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stopActionPerformed(evt);
+            }
+        });
+
+        puse.setText("إيقاف مؤقت ");
+        puse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                puseActionPerformed(evt);
+            }
+        });
+
+        play.setText("تشغيل");
+        play.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("يجب عليك تحديد المادة المراد الاستماع إليها قبل النقر على زر التشغيل ");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(463, Short.MAX_VALUE)
-                .addComponent(course, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel1)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(165, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(go)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(course, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel1)))
                 .addGap(263, 263, 263))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(262, 262, 262)
+                .addComponent(stop)
+                .addGap(18, 18, 18)
+                .addComponent(play)
+                .addGap(18, 18, 18)
+                .addComponent(puse)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(34, 34, 34)
+                .addGap(33, 33, 33)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(course, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(299, Short.MAX_VALUE))
+                    .addComponent(course, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(go))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(play)
+                    .addComponent(puse)
+                    .addComponent(stop))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(104, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -208,7 +296,7 @@ public class listen extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 880, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -217,7 +305,7 @@ public class listen extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE))
         );
 
         pack();
@@ -232,14 +320,120 @@ public class listen extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void mainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainActionPerformed
-                        student Shome=new student();
-                        Shome.setVisible(true);
-                        close();
+                     new student().setVisible(true);
+                            this.dispose();
+                       
     }//GEN-LAST:event_mainActionPerformed
 
+    private void courseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_courseMouseClicked
+    
+        
+    }//GEN-LAST:event_courseMouseClicked
+
+    private void goActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goActionPerformed
+        
+          try{
+             int id; 
+             String a="عنوان المحاضرة";
+             String b="اسم المحاضر";
+             String i="العنوان المرجعي";
+        
+            String coursename=(String)course.getSelectedItem();
+            id=getKeyForValue(coursename);
+           String sql1="select SID as c From Subjects Where SID = "+id+" ";
+           pst=con.prepareStatement(sql1);
+           rs=pst.executeQuery();
+           if(rs.next()){
+          Integer sid=rs.getInt(1);
+            
+       String sql="SELECT [Subjects].[Teacher] as '"+b+"', Lecture.LName as '"+a+"', Lecture.LID as '"+i+"' FROM [Lectures].[dbo].[Lecture] INNER JOIN [Lectures].[dbo].[Subjects] ON Subjects.SID="+sid+" AND Lecture.SID="+sid+"";
+        pst=con.prepareStatement(sql);
+        rs=pst.executeQuery();
+       
+             lectureInfo.setModel(DbUtils.resultSetToTableModel(rs));}
+        else{
+                             System.out.printf("no data");
+
+           }
+      
+      }catch(Exception e)
+      {
+           //JOptionPane.showMessageDialog(null,e);
+                  System.out.printf(e.toString());
+
+      }
+        
+    }//GEN-LAST:event_goActionPerformed
+
+    private void lectureInfoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lectureInfoMouseClicked
+        
+        try{
+        String url;
+        int row=lectureInfo.getSelectedRow();
+        int lecID;
+        String id=(lectureInfo.getModel().getValueAt(row,2).toString());
+        lecID=Integer.parseInt(id);
+        String Sql="select FileLocation From Lecture where LID="+lecID+" ";
+        pst=con.prepareStatement(Sql);
+        rs=pst.executeQuery();
+        
+        if(rs.next())
+        {
+            String textA=rs.getString("FileLocation");
+            try{
+
+                 url = textA;
+                JFXPanel fxPanel = new JFXPanel();
+            m = new Media(new File(url).toURI().toString());
+             mediaPlayer = new MediaPlayer(m);
+             
+             
+            }catch(Exception e){
+                            JOptionPane.showMessageDialog(null, e);
+
+            }
+        }
+            
+        }catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        
+        
+    }//GEN-LAST:event_lectureInfoMouseClicked
+
+    private void stopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopActionPerformed
+           mediaPlayer.stop();
+        
+    }//GEN-LAST:event_stopActionPerformed
+
+    private void puseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_puseActionPerformed
+        mediaPlayer.pause();
+    }//GEN-LAST:event_puseActionPerformed
+
+    private void playActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playActionPerformed
+        Play();
+    }//GEN-LAST:event_playActionPerformed
+    
+    private void Play(){
+        try{
+            mediaPlayer.play();
+        }catch(Exception l){
+                    JOptionPane.showMessageDialog(null, l);
+
+        }
+    }
     /**
      * @param args the command line arguments
      */
+    private int getKeyForValue(String value) {
+    for (Map.Entry<Integer, String> entry : categoryMap.entrySet()) {
+         if (entry.getValue().equals(value)) {
+             return entry.getKey();
+         }
+     }
+    return 0;
+}
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -270,15 +464,22 @@ public class listen extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox course;
+    private javax.swing.JButton go;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JTable lectureInfo;
     private javax.swing.JButton main;
+    private javax.swing.JButton play;
+    private javax.swing.JButton puse;
+    private javax.swing.JButton stop;
     // End of variables declaration//GEN-END:variables
 }

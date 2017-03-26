@@ -5,7 +5,6 @@
  */
 
 package letures;
-import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
 import javax.swing.JLabel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
