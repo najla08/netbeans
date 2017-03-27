@@ -23,7 +23,7 @@ public class edit extends javax.swing.JFrame {
     /**
      * Creates new form listen
      */
-    
+   
     Connection con=null;
      ResultSet rs=null;
      ResultSet rs2=null;
@@ -39,7 +39,8 @@ public class edit extends javax.swing.JFrame {
           String subject=Txtsrch.getText();
             String lName;
             String col="المحاضرات";
-      String sql="select LName AS'"+col+"' from Lecture where SID IN (select SID from Subjects where SName like '"+subject+"%' OR Year like '"+subject+"%');";  //"+subject+"
+            String col2="العنوان المرجعي";
+      String sql="select LName AS'"+col+"',LID AS '"+col2+"' from Lecture where SID IN (select SID from Subjects where SName like '"+subject+"%' OR Year like '"+subject+"%');";  //"+subject+"
       //String sql1="Select COUNT(*)A total from Lecture where SID IN (select SID from Subjects where SName like'g%' OR Year like '"+subject+"%');";
        pst=con.prepareStatement(sql);
       // pst2=con.prepareStatement(sql1);
@@ -71,8 +72,7 @@ private void search(){
             while(rs.next())
             {
          
-                 lName=rs.getString("LName");
-              
+                 lName=rs.getString("LName");              
 //                  LblLec.setText(lName);
                   
                   i++;
@@ -228,9 +228,17 @@ private void search(){
 
             },
             new String [] {
-                "المحاضرات"
+                "المحاضرات", "العنوان المرجعي"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         Tlec.setColumnSelectionAllowed(true);
         Tlec.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -297,6 +305,11 @@ private void search(){
         Bmenu3.setBorder(null);
         Bmenu3.setBorderPainted(false);
         Bmenu3.setPreferredSize(new java.awt.Dimension(54, 16));
+        Bmenu3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Bmenu3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -345,8 +358,24 @@ tbl();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void TlecMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TlecMouseClicked
-JOptionPane.showMessageDialog(null, "gjdj");        // TODO add your handling code here:
+  
+        
+        int row=Tlec.getSelectedRow();
+       
+        String id=(Tlec.getModel().getValueAt(row,1).toString());
+        int lecID=Integer.parseInt(id);
+        new editLecture(lecID).setVisible(true);
+        this.dispose();
+      
+
     }//GEN-LAST:event_TlecMouseClicked
+
+    private void Bmenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bmenu3ActionPerformed
+        
+        new edit().setVisible(true);
+        this.dispose();
+        
+    }//GEN-LAST:event_Bmenu3ActionPerformed
 
     /**
      * @param args the command line arguments

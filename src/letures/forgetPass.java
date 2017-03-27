@@ -307,8 +307,8 @@ public class forgetPass extends javax.swing.JFrame {
          rs=pst.executeQuery();
         if(rs.next()){
           final String Pass=rs.getString("Password");
-            final String username="najlaaltaleb@gmail.com";
-            final String password="Hassan08";
+            final String username="";
+            final String password="";
             final String to=UEmail.getText();
             final String from="MRFNSupportTeam";
             final String subject="MRFN Team";

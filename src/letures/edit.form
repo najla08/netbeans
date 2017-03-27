@@ -313,8 +313,9 @@
             <Component class="javax.swing.JTable" name="Tlec">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="1" rowCount="0">
-                    <Column editable="true" title="&#x627;&#x644;&#x645;&#x62d;&#x627;&#x636;&#x631;&#x627;&#x62a;" type="java.lang.Object"/>
+                  <Table columnCount="2" rowCount="0">
+                    <Column editable="false" title="&#x627;&#x644;&#x645;&#x62d;&#x627;&#x636;&#x631;&#x627;&#x62a;" type="java.lang.Object"/>
+                    <Column editable="false" title="&#x627;&#x644;&#x639;&#x646;&#x648;&#x627;&#x646; &#x627;&#x644;&#x645;&#x631;&#x62c;&#x639;&#x64a;" type="java.lang.Object"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -371,6 +372,9 @@
           <Dimension value="[54, 16]"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Bmenu3ActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

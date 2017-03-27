@@ -24,9 +24,10 @@ public class editLecture extends javax.swing.JFrame {
      Connection con=null;
      ResultSet rs=null;
      PreparedStatement pst=null;
-     int LecId=1002;
+     int LecId;
      
-    public editLecture() {
+    public editLecture(int lecid) {
+        LecId=lecid;
            initComponents();
         con=connection.ConnerDb();
                     fillcomboBox();
@@ -334,13 +335,25 @@ public class editLecture extends javax.swing.JFrame {
            String sql1="select SID From Subjects Where SID = "+id+" ";
            pst=con.prepareStatement(sql1);
            rs=pst.executeQuery();
-                      if(rs.next()){
-                              Integer sid=rs.getInt(1);
+                      
+                         
+        if(filename==null){
+          Integer sid=rs.getInt(1);
+            String sql=  "UPDATE [Lectures].[dbo].Lecture SET LName =N'"+lN+"' , SID ="+sid+"  WHERE LID='"+LecId+"'";
+           pst=con.prepareStatement(sql);
+           pst.executeUpdate(sql);
+         
+            
+        }else{
+              Integer sid=rs.getInt(1);
+       String sql=  "UPDATE [Lectures].[dbo].Lecture SET LName =N'"+lN+"' , FileLocation ='"+filename+"' , SID ="+sid+"  WHERE LID='"+LecId+"'";
+           pst=con.prepareStatement(sql);
+          pst.executeUpdate(sql);
 
-       String sql=  "UPDATE [Lectures].[dbo].Lecture SET LName ='"+lN+"' , FileLocation ='"+filename+"' , SID ="+sid+"  WHERE LID='"+LecId+"'";
-          pst=con.prepareStatement(sql);
-            rs=pst.executeQuery();
-                      }
+
+          
+         }
+                      
       
         
         }catch(Exception n){
@@ -402,12 +415,6 @@ public class editLecture extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new editLecture().setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
