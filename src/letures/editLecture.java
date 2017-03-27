@@ -114,7 +114,7 @@ public class editLecture extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         update = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        delete = new javax.swing.JButton();
         subject = new javax.swing.JComboBox<String>();
         Jattach = new javax.swing.JTextField();
         Bmenu4 = new javax.swing.JButton();
@@ -204,7 +204,12 @@ public class editLecture extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("حذف");
+        delete.setText("حذف");
+        delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteActionPerformed(evt);
+            }
+        });
 
         subject.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -230,7 +235,7 @@ public class editLecture extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(delete, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(25, 25, 25)
                                 .addComponent(update, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
@@ -259,7 +264,7 @@ public class editLecture extends javax.swing.JFrame {
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
+                    .addComponent(delete)
                     .addComponent(update))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -267,16 +272,31 @@ public class editLecture extends javax.swing.JFrame {
         Bmenu4.setText("إضافة مقرر");
         Bmenu4.setBorder(null);
         Bmenu4.setBorderPainted(false);
+        Bmenu4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Bmenu4ActionPerformed(evt);
+            }
+        });
 
         Bmenu5.setText("إضافة محاضرة");
         Bmenu5.setBorder(null);
         Bmenu5.setBorderPainted(false);
         Bmenu5.setPreferredSize(new java.awt.Dimension(54, 16));
+        Bmenu5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Bmenu5ActionPerformed(evt);
+            }
+        });
 
         Bmenu6.setText("تعديل/حذف محاضرة");
         Bmenu6.setBorder(null);
         Bmenu6.setBorderPainted(false);
         Bmenu6.setPreferredSize(new java.awt.Dimension(54, 16));
+        Bmenu6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Bmenu6ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -335,21 +355,25 @@ public class editLecture extends javax.swing.JFrame {
            String sql1="select SID From Subjects Where SID = "+id+" ";
            pst=con.prepareStatement(sql1);
            rs=pst.executeQuery();
-                      
-                         
+          rs.next();
+              Integer sid=rs.getInt(1);           
         if(filename==null){
-          Integer sid=rs.getInt(1);
             String sql=  "UPDATE [Lectures].[dbo].Lecture SET LName =N'"+lN+"' , SID ="+sid+"  WHERE LID='"+LecId+"'";
            pst=con.prepareStatement(sql);
-           pst.executeUpdate(sql);
-         
+         pst.executeUpdate();
+       JOptionPane.showMessageDialog(null, "تم التعديل بنجاح");
+        new edit().setVisible(true);
+       this.dispose();
+
             
         }else{
-              Integer sid=rs.getInt(1);
        String sql=  "UPDATE [Lectures].[dbo].Lecture SET LName =N'"+lN+"' , FileLocation ='"+filename+"' , SID ="+sid+"  WHERE LID='"+LecId+"'";
            pst=con.prepareStatement(sql);
-          pst.executeUpdate(sql);
+         pst.executeUpdate();
 
+       JOptionPane.showMessageDialog(null, "تم التعديل بنجاح");
+        new edit().setVisible(true);
+       this.dispose();
 
           
          }
@@ -384,6 +408,40 @@ public class editLecture extends javax.swing.JFrame {
   filename=v.getAbsolutePath();
  Jattach.setText(filename);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
+       try{
+        String sql="DELETE FROM Lecture WHERE LID='"+LecId+"'";
+         pst=con.prepareStatement(sql);
+         pst.execute();
+
+       JOptionPane.showMessageDialog(null, "تم الحذف بنجاح");
+       new edit().setVisible(true);
+       this.dispose();
+       
+       }catch(Exception e){
+                   JOptionPane.showMessageDialog(null, e);
+
+       }
+       
+
+        
+    }//GEN-LAST:event_deleteActionPerformed
+
+    private void Bmenu4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bmenu4ActionPerformed
+        new addSubject().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_Bmenu4ActionPerformed
+
+    private void Bmenu5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bmenu5ActionPerformed
+        new addLecture().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_Bmenu5ActionPerformed
+
+    private void Bmenu6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bmenu6ActionPerformed
+        new edit().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_Bmenu6ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -425,8 +483,8 @@ public class editLecture extends javax.swing.JFrame {
     private javax.swing.JButton Bmenu5;
     private javax.swing.JButton Bmenu6;
     private javax.swing.JTextField Jattach;
+    private javax.swing.JButton delete;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

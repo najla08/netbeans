@@ -35,6 +35,8 @@ public class listen extends javax.swing.JFrame {
      public static String url2=null;
      public static Media m;
      public static MediaPlayer mediaPlayer;
+     public static String email;
+     public static String pass;
 
 
      public static Integer Level;
@@ -94,10 +96,9 @@ public class listen extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        emailF = new javax.swing.JTextField();
+        signin = new javax.swing.JButton();
+        passf = new javax.swing.JPasswordField();
         jPanel2 = new javax.swing.JPanel();
         main = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
@@ -118,26 +119,24 @@ public class listen extends javax.swing.JFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/letures/---------2.png"))); // NOI18N
 
-        jTextField1.setText("البريد الالكتروني");
+        emailF.setText("البريد الالكتروني");
 
-        jTextField2.setText("كلمة المرور");
-
-        jButton3.setText("تسجيل الدخول");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        signin.setText("تسجيل الدخول");
+        signin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                signinMouseClicked(evt);
+            }
+        });
+        signin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                signinActionPerformed(evt);
             }
         });
 
-        jButton4.setBackground(new java.awt.Color(255, 255, 255));
-        jButton4.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(0, 51, 153));
-        jButton4.setText("هل نسيت كلمة المرور؟ ");
-        jButton4.setBorderPainted(false);
-        jButton4.setContentAreaFilled(false);
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        passf.setText("jPasswordField1");
+        passf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                passfActionPerformed(evt);
             }
         });
 
@@ -147,29 +146,28 @@ public class listen extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
-                .addComponent(jButton3)
+                .addComponent(signin)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField2))
+                .addComponent(passf, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(emailF, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 217, Short.MAX_VALUE)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jTextField1)
-                        .addComponent(jTextField2))
-                    .addComponent(jButton3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(emailF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(passf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(signin))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 204, 153));
@@ -287,7 +285,7 @@ public class listen extends javax.swing.JFrame {
                     .addComponent(stop))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(104, Short.MAX_VALUE))
+                .addContainerGap(93, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -305,22 +303,21 @@ public class listen extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE))
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void signinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signinActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_signinActionPerformed
 
     private void mainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainActionPerformed
-                     new student().setVisible(true);
+ if(mediaPlayer!=null){
+                           mediaPlayer.stop();
+              }
+    new student().setVisible(true);
                             this.dispose();
                        
     }//GEN-LAST:event_mainActionPerformed
@@ -333,6 +330,9 @@ public class listen extends javax.swing.JFrame {
     private void goActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goActionPerformed
         
           try{
+              if(mediaPlayer!=null){
+                           mediaPlayer.stop();
+              }
              int id; 
              String a="عنوان المحاضرة";
              String b="اسم المحاضر";
@@ -368,6 +368,9 @@ public class listen extends javax.swing.JFrame {
     private void lectureInfoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lectureInfoMouseClicked
         
         try{
+              if(mediaPlayer!=null){
+                           mediaPlayer.stop();
+              }
         String url;
         int row=lectureInfo.getSelectedRow();
         int lecID;
@@ -403,7 +406,8 @@ public class listen extends javax.swing.JFrame {
     }//GEN-LAST:event_lectureInfoMouseClicked
 
     private void stopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopActionPerformed
-           mediaPlayer.stop();
+           
+        mediaPlayer.stop();
         
     }//GEN-LAST:event_stopActionPerformed
 
@@ -412,11 +416,53 @@ public class listen extends javax.swing.JFrame {
     }//GEN-LAST:event_puseActionPerformed
 
     private void playActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playActionPerformed
+          if(mediaPlayer!=null){
+                           mediaPlayer.stop();
+              }
         Play();
     }//GEN-LAST:event_playActionPerformed
+
+    private void signinMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_signinMouseClicked
+         if(mediaPlayer!=null){
+                           mediaPlayer.stop();
+              }
+        email=emailF.getText();
+        pass=passf.getText();
+        
+        if(!email.isEmpty()&& !pass.isEmpty()){
+               String sql="Select Email,Password from [Lectures].[dbo].[User] where Email='"+email+"' AND Password= '"+pass+"' ";
+              
+        try{
+           pst=con.prepareStatement(sql);
+           rs= pst.executeQuery();
+           
+           if(rs.isBeforeFirst()){
+            new edit().setVisible(true);
+            this.dispose();
+           
+           }else{
+                      JOptionPane.showMessageDialog(null, "البريد الالكتروني أو كلمة المرور خاطئة يرجى إعادة التحقق والمحاولة مرة أخرى ", "Error",JOptionPane.ERROR_MESSAGE );
+           }
+            
+                    
+              }catch(Exception e){
+        System.out.printf(e.toString());
+        }  
+
+        }else{
+      
+                    JOptionPane.showMessageDialog(null, "البريد الالكتروني أو كلمة المرور فارغة يرجى إعادة التحقق والمحاولة مرة أخرى ", "Error",JOptionPane.ERROR_MESSAGE );
+
+        }
+    }//GEN-LAST:event_signinMouseClicked
+
+    private void passfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passfActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_passfActionPerformed
     
     private void Play(){
         try{
+           
             mediaPlayer.play();
         }catch(Exception l){
                     JOptionPane.showMessageDialog(null, l);
@@ -464,9 +510,8 @@ public class listen extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox course;
+    private javax.swing.JTextField emailF;
     private javax.swing.JButton go;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -474,12 +519,12 @@ public class listen extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTable lectureInfo;
     private javax.swing.JButton main;
+    private javax.swing.JPasswordField passf;
     private javax.swing.JButton play;
     private javax.swing.JButton puse;
+    private javax.swing.JButton signin;
     private javax.swing.JButton stop;
     // End of variables declaration//GEN-END:variables
 }

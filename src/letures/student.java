@@ -73,7 +73,6 @@ public class student extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         emailF = new javax.swing.JTextField();
         signin = new javax.swing.JButton();
-        forgetPassword = new javax.swing.JButton();
         passf = new javax.swing.JPasswordField();
         jPanel2 = new javax.swing.JPanel();
         main = new javax.swing.JButton();
@@ -105,23 +104,6 @@ public class student extends javax.swing.JFrame {
             }
         });
 
-        forgetPassword.setBackground(new java.awt.Color(255, 255, 255));
-        forgetPassword.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        forgetPassword.setForeground(new java.awt.Color(0, 51, 153));
-        forgetPassword.setText("هل نسيت كلمة المرور؟ ");
-        forgetPassword.setBorderPainted(false);
-        forgetPassword.setContentAreaFilled(false);
-        forgetPassword.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                forgetPasswordMouseClicked(evt);
-            }
-        });
-        forgetPassword.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                forgetPasswordActionPerformed(evt);
-            }
-        });
-
         passf.setText("jPasswordField1");
         passf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -137,9 +119,7 @@ public class student extends javax.swing.JFrame {
                 .addGap(29, 29, 29)
                 .addComponent(signin)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(forgetPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(passf))
+                .addComponent(passf, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(emailF, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 137, Short.MAX_VALUE)
@@ -155,9 +135,7 @@ public class student extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(emailF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(passf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(signin))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(forgetPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(signin)))
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 204, 153));
@@ -267,10 +245,6 @@ public class student extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_signinActionPerformed
 
-    private void forgetPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forgetPasswordActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_forgetPasswordActionPerformed
-
     private void mainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainActionPerformed
                            new student().setVisible(true);
                             this.dispose();
@@ -311,13 +285,6 @@ public class student extends javax.swing.JFrame {
     private void passfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passfActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_passfActionPerformed
-
-    private void forgetPasswordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_forgetPasswordMouseClicked
-
-         new forgetPass().setVisible(true);
-        this.dispose();
-
-    }//GEN-LAST:event_forgetPasswordMouseClicked
 
     private void yearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yearActionPerformed
         // TODO add your handling code here:
@@ -376,7 +343,6 @@ public class student extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField emailF;
-    private javax.swing.JButton forgetPassword;
     private javax.swing.JButton go;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
