@@ -6,6 +6,11 @@
 
 package letures;
 
+import com.sun.glass.events.KeyEvent;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,12 +28,17 @@ String filename;
     /**
      * Creates new form listen
      */
+String attach;
     Connection con=null;
      ResultSet rs=null;
      PreparedStatement pst=null;
     public addLecture() {
         initComponents();
-         
+          Bmenu5.setEnabled(false);
+          this.getContentPane().setPreferredSize(new Dimension(816, 558));//[816, 558]
+    this.pack();
+     setLocationRelativeTo(null);
+this.setVisible(true);
         con=connection.ConnerDb();
         lvlC();  
     }
@@ -89,17 +99,24 @@ String filename;
             JOptionPane.showMessageDialog(null, e);
         }
     }
+     public void close(){
+    WindowEvent WinclosingEvent =new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
+    Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(WinclosingEvent);
+}
 private void add(){
     try
     {
+         
+        String LecT;
         String sname=(String)jComboL.getSelectedItem();
-          String sql="Select SID from Subjects where SName like'"+sname+"'"; 
+          String sql="Select SID from Subjects where SName like N'%"+sname+"%'"; //Select SID from Lectures.dbo.Subjects where Lectures.dbo.Subjects.SName like N'%%'
            pst=con.prepareStatement(sql);
             rs=pst.executeQuery();
-            rs.next();
-      int j=rs.getInt("SID");
-          String LecT=TxtT.getText();
-          
+           rs.next();
+            
+       int j=rs.getInt("SID");
+           LecT=TxtT.getText();
+           
         
          
          
@@ -111,10 +128,11 @@ private void add(){
     
         pst.setInt(1,j);
         pst.setString(2,LecT);
-        pst.setString(3,filename);
+        pst.setString(3,Jattach.getText());
         
          pst.executeUpdate();
          con.close();
+          JOptionPane.showMessageDialog(null, "تم رفع المحاضرة بنجاح","",JOptionPane.NO_OPTION );
     }
     catch( SQLException ex ){
         JOptionPane.showMessageDialog(null, ex);
@@ -146,6 +164,7 @@ private void add(){
         buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        logout = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -203,26 +222,37 @@ private void add(){
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/letures/---------2.png"))); // NOI18N
 
+        logout.setText("تسجيل خروج");
+        logout.setToolTipText("");
+        logout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logoutActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(logout)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 2, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(logout))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jLabel1.setText("عنوان المحاضرة");
 
         jLabel3.setText("المقرر");
 
-        TxtT.setText("title");
+        TxtT.setToolTipText("");
         TxtT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TxtTActionPerformed(evt);
@@ -251,8 +281,15 @@ private void add(){
             }
         });
 
+        Jattach.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                JattachKeyPressed(evt);
+            }
+        });
+
         jLabel5.setText("المستوى");
 
+        lvlCom.setToolTipText("إختر المستوى");
         lvlCom.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 lvlComItemStateChanged(evt);
@@ -321,7 +358,7 @@ private void add(){
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2)
                     .addComponent(Jattach, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(111, 111, 111))
         );
@@ -339,11 +376,21 @@ private void add(){
         Bmenu5.setBorder(null);
         Bmenu5.setBorderPainted(false);
         Bmenu5.setPreferredSize(new java.awt.Dimension(54, 16));
+        Bmenu5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Bmenu5ActionPerformed(evt);
+            }
+        });
 
         Bmenu6.setText("تعديل/حذف محاضرة");
         Bmenu6.setBorder(null);
         Bmenu6.setBorderPainted(false);
         Bmenu6.setPreferredSize(new java.awt.Dimension(54, 16));
+        Bmenu6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Bmenu6ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -353,7 +400,7 @@ private void add(){
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 235, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -367,7 +414,7 @@ private void add(){
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Bmenu4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Bmenu4, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
                     .addComponent(Bmenu5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(Bmenu6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -375,10 +422,9 @@ private void add(){
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(Bmenu4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -386,14 +432,27 @@ private void add(){
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Bmenu6, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-     add();   // TODO add your handling code here:
+ // TODO add your handling code here:
+        String tx=TxtT.getText();
+    attach=Jattach.getText();
+   if(tx.isEmpty()){
+       JOptionPane.showMessageDialog(null, "يرجى تعبئة خانة عنوان المحاضرة ", "Error",JOptionPane.ERROR_MESSAGE );
+   }else if(attach.isEmpty()){
+       JOptionPane.showMessageDialog(null, "يرجى اختيار ملف ", "Error",JOptionPane.ERROR_MESSAGE );
+   }else{
+       add();
+   }
+   
+
+        // add();   // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void TxtTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtTActionPerformed
@@ -437,6 +496,29 @@ private void add(){
   // TODO add your handling code here:
    // TODO add your handling code here:
     }//GEN-LAST:event_lvlComPropertyChange
+
+    private void JattachKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JattachKeyPressed
+// ((key>=evt.VK_0&&key<=evt.VK_9)||(key>=evt.VK_NUMPAD0&&key<=evt.VK_NUMPAD9)||key==KeyEvent.VK_BACKSPACE || key==KeyEvent.VK_MINUS)
+   Jattach.setEditable(false);  // TODO add your handling code here:
+   JOptionPane.showMessageDialog(null, "يرجى اختيار ملف ", "Error",JOptionPane.ERROR_MESSAGE );
+    }//GEN-LAST:event_JattachKeyPressed
+
+    private void Bmenu6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bmenu6ActionPerformed
+ new edit().setVisible(true);
+        this.dispose();           // TODO add your handling code here:
+    }//GEN-LAST:event_Bmenu6ActionPerformed
+
+    private void Bmenu5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bmenu5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Bmenu5ActionPerformed
+
+    private void logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutActionPerformed
+student s=new student();
+// TODO add your handling code here:
+
+s.setVisible(true);
+this.dispose();  
+    }//GEN-LAST:event_logoutActionPerformed
 
     /**
      * @param args the command line arguments
@@ -501,6 +583,7 @@ private void add(){
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JButton logout;
     private javax.swing.JComboBox<String> lvlCom;
     private java.awt.Menu menu1;
     private java.awt.Menu menu2;

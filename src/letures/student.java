@@ -33,6 +33,8 @@ public class student extends javax.swing.JFrame {
         initComponents();
         con=connection.ConnerDb();
         fillcomboBox();
+         setLocationRelativeTo(null);
+this.setVisible(true);
     }
     
        private void fillcomboBox()
@@ -90,7 +92,7 @@ public class student extends javax.swing.JFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/letures/---------2.png"))); // NOI18N
 
-        emailF.setText("البريد الالكتروني");
+        emailF.setToolTipText("البريد الالكتروني");
 
         signin.setText("تسجيل الدخول");
         signin.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -104,7 +106,7 @@ public class student extends javax.swing.JFrame {
             }
         });
 
-        passf.setText("jPasswordField1");
+        passf.setToolTipText("كلمة المرور");
         passf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 passfActionPerformed(evt);

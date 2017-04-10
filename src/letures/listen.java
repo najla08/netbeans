@@ -46,7 +46,8 @@ public class listen extends javax.swing.JFrame {
     public listen(String y,String l) {
         initComponents();
         con=connection.ConnerDb();
-      
+       setLocationRelativeTo(null);
+this.setVisible(true);
         Year=y;
         Level=Integer.parseInt(l);
         fillcomboBox();
@@ -119,7 +120,7 @@ public class listen extends javax.swing.JFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/letures/---------2.png"))); // NOI18N
 
-        emailF.setText("البريد الالكتروني");
+        emailF.setToolTipText("البريد الالكتروني");
 
         signin.setText("تسجيل الدخول");
         signin.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -133,7 +134,7 @@ public class listen extends javax.swing.JFrame {
             }
         });
 
-        passf.setText("jPasswordField1");
+        passf.setToolTipText("كلمة المرور");
         passf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 passfActionPerformed(evt);
@@ -294,7 +295,7 @@ public class listen extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 880, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 898, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

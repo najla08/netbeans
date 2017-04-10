@@ -28,7 +28,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
           <Component id="jPanel2" alignment="0" max="32767" attributes="0"/>
-          <Component id="jPanel3" alignment="0" pref="880" max="32767" attributes="0"/>
+          <Component id="jPanel3" alignment="0" pref="898" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -98,7 +98,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="emailF">
           <Properties>
-            <Property name="text" type="java.lang.String" value="&#x627;&#x644;&#x628;&#x631;&#x64a;&#x62f; &#x627;&#x644;&#x627;&#x644;&#x643;&#x62a;&#x631;&#x648;&#x646;&#x64a;"/>
+            <Property name="toolTipText" type="java.lang.String" value="&#x627;&#x644;&#x628;&#x631;&#x64a;&#x62f; &#x627;&#x644;&#x627;&#x644;&#x643;&#x62a;&#x631;&#x648;&#x646;&#x64a;"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="signin">
@@ -112,7 +112,7 @@
         </Component>
         <Component class="javax.swing.JPasswordField" name="passf">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jPasswordField1"/>
+            <Property name="toolTipText" type="java.lang.String" value="&#x643;&#x644;&#x645;&#x629; &#x627;&#x644;&#x645;&#x631;&#x648;&#x631;"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="passfActionPerformed"/>

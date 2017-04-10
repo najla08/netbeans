@@ -5,10 +5,12 @@
  */
 
 package letures;
+import com.sun.glass.events.KeyEvent;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 /**
@@ -20,20 +22,31 @@ public class addSubject extends javax.swing.JFrame {
     /**
      * Creates new form listen
      */
-    Connection con=null;
+    String levl;
+    String subject;
+    String teacher;
+     int lvl;
+     String year;
+     Connection con=null;
      ResultSet rs=null;
      PreparedStatement pst=null;
     public addSubject() {
         initComponents();
-      
+      Bmenu4.setEnabled(false);
+        this.getContentPane().setPreferredSize(new Dimension(816, 558));//[816, 558]
+    this.pack();
+     setLocationRelativeTo(null);
+this.setVisible(true);
     }
 private void add(){
     try
     {
-          String subject=TxtSub.getText();
-            String teacher=TxtTech.getText();
-            int lvl=Integer.parseInt(Txtlvl.getText());
-            String year=TxtYr.getText();
+     
+        subject=TxtSub.getText();
+             teacher=TxtTech.getText();
+             
+            year=TxtYr.getText();
+         lvl=Integer.parseInt(Txtlvl.getText());
       String sql="insert into Subjects(SName,Teacher,Level,Year)Values(?,?,?,?)";  
       
        pst=con.prepareStatement(sql);
@@ -43,12 +56,20 @@ private void add(){
         pst.setString(4,year);
          pst.executeUpdate();
          con.close();
+          JOptionPane.showMessageDialog(null, "تم إدخال البيانات بنجاح", "",JOptionPane.NO_OPTION );
+          TxtSub.setText("");
+          TxtTech.setText("");
+          TxtYr.setText("");
+          Txtlvl.setText("");
+          TxtYr.setBackground(Color.white);
+          Txtlvl.setBackground(Color.white);
     }
     catch( SQLException ex ){
         JOptionPane.showMessageDialog(null, ex);
         
     }
 }
+  
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -70,8 +91,7 @@ private void add(){
         jMenuItem2 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
+        logout = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -114,57 +134,43 @@ private void add(){
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/letures/---------2.png"))); // NOI18N
 
-        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(585, Short.MAX_VALUE)
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
+        logout.setText("تسجيل خروج");
+        logout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logoutActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 597, Short.MAX_VALUE)
+                .addComponent(logout)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 464, Short.MAX_VALUE)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(11, Short.MAX_VALUE)))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(logout))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jLabel1.setText("المقرر");
 
         jLabel3.setText("المحاضر");
 
-        TxtSub.setText("subject");
+        TxtSub.setToolTipText("");
         TxtSub.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TxtSubActionPerformed(evt);
             }
         });
 
-        TxtTech.setText("teacher");
+        TxtTech.setToolTipText("");
         TxtTech.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TxtTechActionPerformed(evt);
@@ -173,11 +179,19 @@ private void add(){
 
         jLabel4.setText("المستوى");
 
-        Txtlvl.setText("level");
+        Txtlvl.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                TxtlvlKeyPressed(evt);
+            }
+        });
 
         jLabel5.setText("العام الدراسي");
 
-        TxtYr.setText("year");
+        TxtYr.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                TxtYrKeyPressed(evt);
+            }
+        });
 
         jButton1.setText("حفظ");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -207,7 +221,7 @@ private void add(){
                             .addComponent(jLabel3)
                             .addComponent(jLabel4)
                             .addComponent(jLabel5))))
-                .addContainerGap(108, Short.MAX_VALUE))
+                .addContainerGap(68, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -240,16 +254,31 @@ private void add(){
         Bmenu4.setText("إضافة مقرر");
         Bmenu4.setBorder(null);
         Bmenu4.setBorderPainted(false);
+        Bmenu4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Bmenu4ActionPerformed(evt);
+            }
+        });
 
         Bmenu5.setText("إضافة محاضرة");
         Bmenu5.setBorder(null);
         Bmenu5.setBorderPainted(false);
         Bmenu5.setPreferredSize(new java.awt.Dimension(54, 16));
+        Bmenu5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Bmenu5ActionPerformed(evt);
+            }
+        });
 
         Bmenu6.setText("تعديل/حذف محاضرة");
         Bmenu6.setBorder(null);
         Bmenu6.setBorderPainted(false);
         Bmenu6.setPreferredSize(new java.awt.Dimension(54, 16));
+        Bmenu6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Bmenu6ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -259,7 +288,7 @@ private void add(){
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 216, Short.MAX_VALUE)
+            .addGap(0, 206, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -279,7 +308,8 @@ private void add(){
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -298,8 +328,38 @@ private void add(){
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
  con=connection.ConnerDb();//to start connection
- add();
-
+  subject=TxtSub.getText();
+             teacher=TxtTech.getText();
+             
+            year=TxtYr.getText();
+           
+            if(subject.equals("")&&teacher.equals("")&&year.equals("")&&Txtlvl.getText().equals("")){
+                JOptionPane.showMessageDialog(null, "يرجى تعبئه الخانات اولا", "Error",JOptionPane.ERROR_MESSAGE );
+            }else{
+         
+            if (subject.isEmpty()){
+                JOptionPane.showMessageDialog(null, "يرجى تعبئة خانة المقرر ", "Error",JOptionPane.ERROR_MESSAGE );
+            }
+            else if(teacher.isEmpty()){
+                 JOptionPane.showMessageDialog(null, "يرجى تعبئة خانة المحاضر ", "Error",JOptionPane.ERROR_MESSAGE );
+                     }
+            else if(Txtlvl.getText().isEmpty()){
+                JOptionPane.showMessageDialog(null, "يرجى تعبئة خانة المستوى ", "Error",JOptionPane.ERROR_MESSAGE );
+                             }
+            else if(year.isEmpty()){
+                 JOptionPane.showMessageDialog(null, "يرجى تعبئة خانة العام الدراسي ", "Error",JOptionPane.ERROR_MESSAGE );
+                        } else{
+                add();
+            }}
+    
+            
+              
+    
+                   
+//                    else{
+//                         JOptionPane.showMessageDialog(null, "ممتاز ", "Error",JOptionPane.ERROR_MESSAGE );
+//                    }
+            
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void TxtSubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtSubActionPerformed
@@ -309,6 +369,55 @@ private void add(){
     private void TxtTechActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtTechActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_TxtTechActionPerformed
+
+    private void TxtlvlKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TxtlvlKeyPressed
+   int key=evt.getKeyCode();// TODO add your handling code here:
+if ((key>=evt.VK_0&&key<=evt.VK_9)||(key>=evt.VK_NUMPAD0&&key<=evt.VK_NUMPAD9)||key==KeyEvent.VK_BACKSPACE){
+    Txtlvl.setEditable(true);
+    Txtlvl.setBackground(Color.green);
+ 
+}
+else{
+     Txtlvl.setEditable(false);
+      JOptionPane.showMessageDialog(null, "يسمح بإدخال الأرقام فقط ", "Error",JOptionPane.ERROR_MESSAGE );
+}
+    }//GEN-LAST:event_TxtlvlKeyPressed
+
+    private void TxtYrKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TxtYrKeyPressed
+    
+int key=evt.getKeyCode();// TODO add your handling code here:
+if ((key>=evt.VK_0&&key<=evt.VK_9)||(key>=evt.VK_NUMPAD0&&key<=evt.VK_NUMPAD9)||key==KeyEvent.VK_BACKSPACE || key==KeyEvent.VK_MINUS){
+    TxtYr.setEditable(true);
+    TxtYr.setBackground(Color.green);
+}
+else{
+     TxtYr.setEditable(false);
+      JOptionPane.showMessageDialog(null, "يسمح بإدخال الأرقام و (-) فقط ", "Error",JOptionPane.ERROR_MESSAGE );
+}
+    }//GEN-LAST:event_TxtYrKeyPressed
+
+    private void Bmenu4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bmenu4ActionPerformed
+ new addSubject().setVisible(true);
+        this.dispose();        // TODO add your handling code here:
+    }//GEN-LAST:event_Bmenu4ActionPerformed
+
+    private void Bmenu5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bmenu5ActionPerformed
+ new addLecture().setVisible(true);
+        this.dispose();        // TODO add your handling code here:
+    }//GEN-LAST:event_Bmenu5ActionPerformed
+
+    private void Bmenu6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bmenu6ActionPerformed
+ new edit().setVisible(true);
+        this.dispose();        // TODO add your handling code here:
+    }//GEN-LAST:event_Bmenu6ActionPerformed
+
+    private void logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutActionPerformed
+student s=new student();
+// TODO add your handling code here:
+
+s.setVisible(true);
+this.dispose();          // TODO add your handling code here:
+    }//GEN-LAST:event_logoutActionPerformed
 
     /**
      * @param args the command line arguments
@@ -360,7 +469,6 @@ private void add(){
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuItem jMenuItem1;
@@ -368,7 +476,7 @@ private void add(){
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
+    private javax.swing.JButton logout;
     private java.awt.Menu menu1;
     private java.awt.Menu menu2;
     private java.awt.Menu menu3;

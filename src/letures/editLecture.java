@@ -29,6 +29,8 @@ public class editLecture extends javax.swing.JFrame {
     public editLecture(int lecid) {
         LecId=lecid;
            initComponents();
+            setLocationRelativeTo(null);
+this.setVisible(true);
         con=connection.ConnerDb();
                     fillcomboBox();
 
@@ -107,6 +109,7 @@ public class editLecture extends javax.swing.JFrame {
         Bmenu3 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        logout = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -115,7 +118,7 @@ public class editLecture extends javax.swing.JFrame {
         update = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         delete = new javax.swing.JButton();
-        subject = new javax.swing.JComboBox<String>();
+        subject = new javax.swing.JComboBox<>();
         Jattach = new javax.swing.JTextField();
         Bmenu4 = new javax.swing.JButton();
         Bmenu5 = new javax.swing.JButton();
@@ -163,18 +166,29 @@ public class editLecture extends javax.swing.JFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/letures/---------2.png"))); // NOI18N
 
+        logout.setText("تسجيل خروج");
+        logout.setToolTipText("");
+        logout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logoutActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(logout)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(logout))
                 .addGap(0, 2, Short.MAX_VALUE))
         );
 
@@ -443,6 +457,14 @@ public class editLecture extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_Bmenu6ActionPerformed
 
+    private void logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutActionPerformed
+student s=new student();
+// TODO add your handling code here:
+
+s.setVisible(true);
+this.dispose();          // TODO add your handling code here:
+    }//GEN-LAST:event_logoutActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -497,6 +519,7 @@ public class editLecture extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JTextField lectureName;
+    private javax.swing.JButton logout;
     private java.awt.Menu menu1;
     private java.awt.Menu menu2;
     private java.awt.Menu menu3;
