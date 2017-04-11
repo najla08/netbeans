@@ -26,7 +26,8 @@ public class addSubject extends javax.swing.JFrame {
     String subject;
     String teacher;
      int lvl;
-     String year;
+     int d;
+    String year;
      Connection con=null;
      ResultSet rs=null;
      PreparedStatement pst=null;
@@ -37,6 +38,22 @@ public class addSubject extends javax.swing.JFrame {
     this.pack();
      setLocationRelativeTo(null);
 this.setVisible(true);
+ 
+ fillDate();
+    }
+    private void fillDate(){
+        String j ,l;
+        d=1437;
+        int n=0;
+        while(d!=1450){
+         n=d+1;
+         //d-n
+         //d=d+2
+                    j = Integer.toString(d); 
+                    l=Integer.toString(n);
+            da.addItem(j+"-"+n);
+            d=d+1;
+        }
     }
 private void add(){
     try
@@ -45,7 +62,7 @@ private void add(){
         subject=TxtSub.getText();
              teacher=TxtTech.getText();
              
-            year=TxtYr.getText();
+            year=(String)da.getSelectedItem();
          lvl=Integer.parseInt(Txtlvl.getText());
       String sql="insert into Subjects(SName,Teacher,Level,Year)Values(?,?,?,?)";  
       
@@ -59,9 +76,9 @@ private void add(){
           JOptionPane.showMessageDialog(null, "تم إدخال البيانات بنجاح", "",JOptionPane.NO_OPTION );
           TxtSub.setText("");
           TxtTech.setText("");
-          TxtYr.setText("");
+          da.setSelectedIndex(-1);
           Txtlvl.setText("");
-          TxtYr.setBackground(Color.white);
+          
           Txtlvl.setBackground(Color.white);
     }
     catch( SQLException ex ){
@@ -100,8 +117,8 @@ private void add(){
         jLabel4 = new javax.swing.JLabel();
         Txtlvl = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        TxtYr = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        da = new javax.swing.JComboBox<>();
         Bmenu4 = new javax.swing.JButton();
         Bmenu5 = new javax.swing.JButton();
         Bmenu6 = new javax.swing.JButton();
@@ -187,16 +204,17 @@ private void add(){
 
         jLabel5.setText("العام الدراسي");
 
-        TxtYr.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                TxtYrKeyPressed(evt);
-            }
-        });
-
         jButton1.setText("حفظ");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+
+        da.setMaximumRowCount(20);
+        da.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                daActionPerformed(evt);
             }
         });
 
@@ -215,7 +233,7 @@ private void add(){
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(TxtTech, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
                             .addComponent(Txtlvl, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(TxtYr, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addComponent(da, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
@@ -244,11 +262,11 @@ private void add(){
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(TxtYr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(da, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(50, 50, 50)
                 .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(128, Short.MAX_VALUE))
         );
 
         Bmenu4.setText("إضافة مقرر");
@@ -331,9 +349,9 @@ private void add(){
   subject=TxtSub.getText();
              teacher=TxtTech.getText();
              
-            year=TxtYr.getText();
+            
            
-            if(subject.equals("")&&teacher.equals("")&&year.equals("")&&Txtlvl.getText().equals("")){
+            if(subject.equals("")&&teacher.equals("")&&Txtlvl.getText().equals("")){
                 JOptionPane.showMessageDialog(null, "يرجى تعبئه الخانات اولا", "Error",JOptionPane.ERROR_MESSAGE );
             }else{
          
@@ -346,9 +364,7 @@ private void add(){
             else if(Txtlvl.getText().isEmpty()){
                 JOptionPane.showMessageDialog(null, "يرجى تعبئة خانة المستوى ", "Error",JOptionPane.ERROR_MESSAGE );
                              }
-            else if(year.isEmpty()){
-                 JOptionPane.showMessageDialog(null, "يرجى تعبئة خانة العام الدراسي ", "Error",JOptionPane.ERROR_MESSAGE );
-                        } else{
+            else{
                 add();
             }}
     
@@ -383,19 +399,6 @@ else{
 }
     }//GEN-LAST:event_TxtlvlKeyPressed
 
-    private void TxtYrKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TxtYrKeyPressed
-    
-int key=evt.getKeyCode();// TODO add your handling code here:
-if ((key>=evt.VK_0&&key<=evt.VK_9)||(key>=evt.VK_NUMPAD0&&key<=evt.VK_NUMPAD9)||key==KeyEvent.VK_BACKSPACE || key==KeyEvent.VK_MINUS){
-    TxtYr.setEditable(true);
-    TxtYr.setBackground(Color.green);
-}
-else{
-     TxtYr.setEditable(false);
-      JOptionPane.showMessageDialog(null, "يسمح بإدخال الأرقام و (-) فقط ", "Error",JOptionPane.ERROR_MESSAGE );
-}
-    }//GEN-LAST:event_TxtYrKeyPressed
-
     private void Bmenu4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bmenu4ActionPerformed
  new addSubject().setVisible(true);
         this.dispose();        // TODO add your handling code here:
@@ -418,6 +421,10 @@ student s=new student();
 s.setVisible(true);
 this.dispose();          // TODO add your handling code here:
     }//GEN-LAST:event_logoutActionPerformed
+
+    private void daActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_daActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_daActionPerformed
 
     /**
      * @param args the command line arguments
@@ -461,8 +468,8 @@ this.dispose();          // TODO add your handling code here:
     private javax.swing.JButton Bmenu6;
     private javax.swing.JTextField TxtSub;
     private javax.swing.JTextField TxtTech;
-    private javax.swing.JTextField TxtYr;
     private javax.swing.JTextField Txtlvl;
+    private javax.swing.JComboBox<String> da;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

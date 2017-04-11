@@ -46,7 +46,7 @@ this.setVisible(true);
             String lName;
             String col="المحاضرات";
             String col2="العنوان المرجعي";
-      String sql="select LName AS'"+col+"',LID AS '"+col2+"' from Lecture where SID IN (select SID from Subjects where SName like N'%"+subject+"%' OR Year like '"+subject+"%');";  //"+subject+"
+      String sql="select LName AS'"+col+"',LID AS '"+col2+"' from Lecture where SID IN (select SID from Subjects where SName like N'%"+subject+"%' OR Year like '"+subject+"%' OR Teacher like N'%"+subject+"%');";  //"+subject+"
       //String sql1="Select COUNT(*)A total from Lecture where SID IN (select SID from Subjects where SName like'g%' OR Year like '"+subject+"%');";
        pst=con.prepareStatement(sql);
       // pst2=con.prepareStatement(sql1);
@@ -66,8 +66,8 @@ private void search(){
          
           String subject=Txtsrch.getText();
             String lName;
-      String sql="select * from Lecture where SID IN (select SID from Subjects where SName like 'g%' OR Year like '"+subject+"%');";  //"+subject+"
-      String sql1="Select COUNT(*)AS total from Lecture where SID IN (select SID from Subjects where SName like'g%' OR Year like '"+subject+"%');";
+      String sql="select * from Lecture where SID IN (select SID from Subjects where SName like '"+subject+"%' OR Year like '"+subject+"%' OR Teacher like'"+subject+"%');";  //"+subject+"
+      String sql1="Select COUNT(*)AS total from Lecture where SID IN (select SID from Subjects where SName like '"+subject+"%' OR Year like '"+subject+"%' OR Teacher like'"+subject+"%');";
        pst=con.prepareStatement(sql);
        pst2=con.prepareStatement(sql1);
        rs2=pst2.executeQuery();
