@@ -166,6 +166,7 @@ this.setVisible(true);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/letures/---------2.png"))); // NOI18N
 
+        logout.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         logout.setText("تسجيل خروج");
         logout.setToolTipText("");
         logout.addActionListener(new java.awt.event.ActionListener() {
@@ -192,8 +193,10 @@ this.setVisible(true);
                 .addGap(0, 2, Short.MAX_VALUE))
         );
 
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel1.setText("عنوان المحاضرة");
 
+        jLabel3.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel3.setText("المقرر");
 
         lectureName.addActionListener(new java.awt.event.ActionListener() {
@@ -202,8 +205,10 @@ this.setVisible(true);
             }
         });
 
+        jLabel4.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel4.setText("ملف المحاضرة");
 
+        update.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         update.setText("تعديل");
         update.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -211,6 +216,7 @@ this.setVisible(true);
             }
         });
 
+        jButton2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton2.setText("اضافة ملف");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -218,6 +224,7 @@ this.setVisible(true);
             }
         });
 
+        delete.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         delete.setText("حذف");
         delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -258,7 +265,7 @@ this.setVisible(true);
                                 .addComponent(jButton2)))
                         .addGap(18, 18, 18)
                         .addComponent(jLabel4)))
-                .addGap(0, 88, Short.MAX_VALUE))
+                .addGap(0, 70, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -283,6 +290,7 @@ this.setVisible(true);
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        Bmenu4.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         Bmenu4.setText("إضافة مقرر");
         Bmenu4.setBorder(null);
         Bmenu4.setBorderPainted(false);
@@ -292,6 +300,7 @@ this.setVisible(true);
             }
         });
 
+        Bmenu5.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         Bmenu5.setText("إضافة محاضرة");
         Bmenu5.setBorder(null);
         Bmenu5.setBorderPainted(false);
@@ -302,6 +311,7 @@ this.setVisible(true);
             }
         });
 
+        Bmenu6.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         Bmenu6.setText("تعديل/حذف محاضرة");
         Bmenu6.setBorder(null);
         Bmenu6.setBorderPainted(false);

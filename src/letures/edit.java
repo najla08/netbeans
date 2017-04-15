@@ -46,7 +46,7 @@ this.setVisible(true);
             String lName;
             String col="المحاضرات";
             String col2="العنوان المرجعي";
-      String sql="select LName AS'"+col+"',LID AS '"+col2+"' from Lecture where SID IN (select SID from Subjects where SName like N'%"+subject+"%' OR Year like '"+subject+"%' OR Teacher like N'%"+subject+"%');";  //"+subject+"
+      String sql="select LName AS'"+col+"',LID AS '"+col2+"' from Lecture where SID IN (select SID from Subjects where SName like N'%"+subject+"%' OR Teacher like N'%"+subject+"%');";  //"+subject+"
       //String sql1="Select COUNT(*)A total from Lecture where SID IN (select SID from Subjects where SName like'g%' OR Year like '"+subject+"%');";
        pst=con.prepareStatement(sql);
       // pst2=con.prepareStatement(sql1);
@@ -66,8 +66,8 @@ private void search(){
          
           String subject=Txtsrch.getText();
             String lName;
-      String sql="select * from Lecture where SID IN (select SID from Subjects where SName like '"+subject+"%' OR Year like '"+subject+"%' OR Teacher like'"+subject+"%');";  //"+subject+"
-      String sql1="Select COUNT(*)AS total from Lecture where SID IN (select SID from Subjects where SName like '"+subject+"%' OR Year like '"+subject+"%' OR Teacher like'"+subject+"%');";
+      String sql="select * from Lecture where SID IN (select SID from Subjects where SName like '"+subject+"%' OR Teacher like'"+subject+"%');";  //"+subject+"
+      String sql1="Select COUNT(*)AS total from Lecture where SID IN (select SID from Subjects where SName like '"+subject+"%' OR Teacher like'"+subject+"%');";
        pst=con.prepareStatement(sql);
        pst2=con.prepareStatement(sql1);
        rs2=pst2.executeQuery();
@@ -167,6 +167,7 @@ private void search(){
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel1.setText("بحث");
 
         Txtsrch.setToolTipText("بالسنة أو المقرر");
@@ -176,6 +177,7 @@ private void search(){
             }
         });
 
+        jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton1.setText("بحث");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -183,8 +185,10 @@ private void search(){
             }
         });
 
+        jLabel3.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel3.setText("نتائج البحث");
 
+        Tlec.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         Tlec.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -202,6 +206,7 @@ private void search(){
             }
         });
         Tlec.setColumnSelectionAllowed(true);
+        Tlec.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         Tlec.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 TlecMouseClicked(evt);
@@ -223,7 +228,7 @@ private void search(){
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(99, Short.MAX_VALUE)
+                .addContainerGap(98, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(LblLec)
@@ -249,9 +254,10 @@ private void search(){
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(135, Short.MAX_VALUE))
+                .addContainerGap(84, Short.MAX_VALUE))
         );
 
+        Bmenu1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         Bmenu1.setText("إضافة مقرر");
         Bmenu1.setBorder(null);
         Bmenu1.setBorderPainted(false);
@@ -261,6 +267,7 @@ private void search(){
             }
         });
 
+        Bmenu2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         Bmenu2.setText("إضافة محاضرة");
         Bmenu2.setBorder(null);
         Bmenu2.setBorderPainted(false);
@@ -271,6 +278,7 @@ private void search(){
             }
         });
 
+        Bmenu3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         Bmenu3.setText("تعديل/حذف محاضرة");
         Bmenu3.setBorder(null);
         Bmenu3.setBorderPainted(false);
@@ -286,6 +294,7 @@ private void search(){
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/letures/---------2.png"))); // NOI18N
         jLabel4.setToolTipText("");
 
+        logout.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         logout.setText("تسجيل الخروج");
         logout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -316,7 +325,7 @@ private void search(){
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Bmenu1, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+                    .addComponent(Bmenu1, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
                     .addComponent(Bmenu2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(Bmenu3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()

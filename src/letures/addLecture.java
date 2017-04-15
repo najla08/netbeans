@@ -222,6 +222,7 @@ private void add(){
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/letures/---------2.png"))); // NOI18N
 
+        logout.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         logout.setText("تسجيل خروج");
         logout.setToolTipText("");
         logout.addActionListener(new java.awt.event.ActionListener() {
@@ -248,8 +249,10 @@ private void add(){
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel1.setText("عنوان المحاضرة");
 
+        jLabel3.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel3.setText("المقرر");
 
         TxtT.setToolTipText("");
@@ -259,8 +262,10 @@ private void add(){
             }
         });
 
+        jLabel4.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel4.setText("ملف المحاضرة");
 
+        jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton1.setText("حفظ");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -268,6 +273,7 @@ private void add(){
             }
         });
 
+        jButton2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton2.setText("اضافة ملف");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -287,6 +293,7 @@ private void add(){
             }
         });
 
+        jLabel5.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel5.setText("المستوى");
 
         lvlCom.setToolTipText("إختر المستوى");
@@ -336,7 +343,7 @@ private void add(){
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(227, 227, 227)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(88, Short.MAX_VALUE))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -363,6 +370,7 @@ private void add(){
                 .addGap(111, 111, 111))
         );
 
+        Bmenu4.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         Bmenu4.setText("إضافة مقرر");
         Bmenu4.setBorder(null);
         Bmenu4.setBorderPainted(false);
@@ -372,6 +380,7 @@ private void add(){
             }
         });
 
+        Bmenu5.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         Bmenu5.setText("إضافة محاضرة");
         Bmenu5.setBorder(null);
         Bmenu5.setBorderPainted(false);
@@ -382,6 +391,7 @@ private void add(){
             }
         });
 
+        Bmenu6.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         Bmenu6.setText("تعديل/حذف محاضرة");
         Bmenu6.setBorder(null);
         Bmenu6.setBorderPainted(false);
@@ -414,7 +424,7 @@ private void add(){
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Bmenu4, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+                    .addComponent(Bmenu4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(Bmenu5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(Bmenu6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())

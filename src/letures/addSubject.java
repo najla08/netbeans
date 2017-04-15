@@ -38,8 +38,9 @@ public class addSubject extends javax.swing.JFrame {
     this.pack();
      setLocationRelativeTo(null);
 this.setVisible(true);
- 
+ fillLevel();
  fillDate();
+ fillsub();
     }
     private void fillDate(){
         String j ,l;
@@ -55,31 +56,67 @@ this.setVisible(true);
             d=d+1;
         }
     }
+    private void fillLevel(){
+        for(int i=1;i<5;i++){
+            coml.addItem(""+i);
+        }
+    }
+    private void fillsub(){
+          try{
+            con=connection.ConnerDb();
+           //jComboL.removeAllItems();
+            
+              
+              //Jattach.setText(level);
+            String sql="select DISTINCT SName from Subjects";
+            pst=con.prepareStatement(sql);
+            rs=pst.executeQuery();
+           
+            if(rs.isBeforeFirst()){
+                while(rs.next())
+            {
+                String SubName=rs.getString("SName");
+                comsub.addItem(SubName);          
+            }//end while-loop   
+            }else{
+                comsub.addItem("لا يوجد اتصال بقاعدة البيانات");
+            }
+            
+        
+        }//end try
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
 private void add(){
     try
     {
      
-        subject=TxtSub.getText();
+        subject=(String)comsub.getSelectedItem();
              teacher=TxtTech.getText();
              
             year=(String)da.getSelectedItem();
-         lvl=Integer.parseInt(Txtlvl.getText());
-      String sql="insert into Subjects(SName,Teacher,Level,Year)Values(?,?,?,?)";  
+         levl=(String)coml.getSelectedItem();
+         lvl= Integer.valueOf(levl);
+      String sql="insert into Subjects(SName,Teacher,Level)Values(?,?,?)";  
       
        pst=con.prepareStatement(sql);
         pst.setString(1,subject);
         pst.setString(2,teacher);
-        pst.setInt(3,lvl);
-        pst.setString(4,year);
+       pst.setInt(3,lvl);
+//        pst.setString(4,year);
          pst.executeUpdate();
          con.close();
           JOptionPane.showMessageDialog(null, "تم إدخال البيانات بنجاح", "",JOptionPane.NO_OPTION );
-          TxtSub.setText("");
-          TxtTech.setText("");
-          da.setSelectedIndex(-1);
-          Txtlvl.setText("");
-          
-          Txtlvl.setBackground(Color.white);
+comsub.setSelectedIndex(-1);
+
+         TxtTech.setText("");
+        da.setSelectedIndex(-1);
+        coml.setSelectedIndex(-1);
+//          Txtlvl.setText("");
+//          
+          //Txtlvl.setBackground(Color.white);
     }
     catch( SQLException ex ){
         JOptionPane.showMessageDialog(null, ex);
@@ -112,13 +149,13 @@ private void add(){
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        TxtSub = new javax.swing.JTextField();
         TxtTech = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        Txtlvl = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         da = new javax.swing.JComboBox<>();
+        coml = new javax.swing.JComboBox<>();
+        comsub = new javax.swing.JComboBox<>();
         Bmenu4 = new javax.swing.JButton();
         Bmenu5 = new javax.swing.JButton();
         Bmenu6 = new javax.swing.JButton();
@@ -151,6 +188,7 @@ private void add(){
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/letures/---------2.png"))); // NOI18N
 
+        logout.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         logout.setText("تسجيل خروج");
         logout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -164,7 +202,7 @@ private void add(){
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addComponent(logout)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 464, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 458, Short.MAX_VALUE)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -176,16 +214,11 @@ private void add(){
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel1.setText("المقرر");
 
+        jLabel3.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel3.setText("المحاضر");
-
-        TxtSub.setToolTipText("");
-        TxtSub.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TxtSubActionPerformed(evt);
-            }
-        });
 
         TxtTech.setToolTipText("");
         TxtTech.addActionListener(new java.awt.event.ActionListener() {
@@ -194,16 +227,13 @@ private void add(){
             }
         });
 
+        jLabel4.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel4.setText("المستوى");
 
-        Txtlvl.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                TxtlvlKeyPressed(evt);
-            }
-        });
-
+        jLabel5.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel5.setText("العام الدراسي");
 
+        jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton1.setText("حفظ");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -218,28 +248,26 @@ private void add(){
             }
         });
 
+        comsub.setToolTipText("");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(141, 141, 141)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(TxtSub, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel1))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(TxtTech, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
-                            .addComponent(Txtlvl, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(da, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))))
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(TxtTech, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(da, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(coml, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comsub, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5))
+                .addContainerGap(66, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -251,14 +279,14 @@ private void add(){
                 .addGap(37, 37, 37)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(TxtSub, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comsub, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TxtTech, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Txtlvl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(coml, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -266,9 +294,10 @@ private void add(){
                     .addComponent(da, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(50, 50, 50)
                 .addComponent(jButton1)
-                .addContainerGap(128, Short.MAX_VALUE))
+                .addContainerGap(122, Short.MAX_VALUE))
         );
 
+        Bmenu4.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         Bmenu4.setText("إضافة مقرر");
         Bmenu4.setBorder(null);
         Bmenu4.setBorderPainted(false);
@@ -278,6 +307,7 @@ private void add(){
             }
         });
 
+        Bmenu5.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         Bmenu5.setText("إضافة محاضرة");
         Bmenu5.setBorder(null);
         Bmenu5.setBorderPainted(false);
@@ -288,6 +318,7 @@ private void add(){
             }
         });
 
+        Bmenu6.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         Bmenu6.setText("تعديل/حذف محاضرة");
         Bmenu6.setBorder(null);
         Bmenu6.setBorderPainted(false);
@@ -346,24 +377,25 @@ private void add(){
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
  con=connection.ConnerDb();//to start connection
-  subject=TxtSub.getText();
+ 
              teacher=TxtTech.getText();
              
-            
+            //if(subject.equals("")&&teacher.equals("")&&Txtlvl.getText().equals("")){}
            
-            if(subject.equals("")&&teacher.equals("")&&Txtlvl.getText().equals("")){
+            if(teacher.equals("")&&comsub.getSelectedIndex()==-1&&teacher.isEmpty()&&coml.getSelectedIndex()==-1){
                 JOptionPane.showMessageDialog(null, "يرجى تعبئه الخانات اولا", "Error",JOptionPane.ERROR_MESSAGE );
             }else{
          
-            if (subject.isEmpty()){
+            if (comsub.getSelectedIndex()==-1){
                 JOptionPane.showMessageDialog(null, "يرجى تعبئة خانة المقرر ", "Error",JOptionPane.ERROR_MESSAGE );
             }
             else if(teacher.isEmpty()){
                  JOptionPane.showMessageDialog(null, "يرجى تعبئة خانة المحاضر ", "Error",JOptionPane.ERROR_MESSAGE );
                      }
-            else if(Txtlvl.getText().isEmpty()){
+            else if(coml.getSelectedIndex()==-1){
                 JOptionPane.showMessageDialog(null, "يرجى تعبئة خانة المستوى ", "Error",JOptionPane.ERROR_MESSAGE );
                              }
+           
             else{
                 add();
             }}
@@ -378,26 +410,9 @@ private void add(){
             
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void TxtSubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtSubActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TxtSubActionPerformed
-
     private void TxtTechActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtTechActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_TxtTechActionPerformed
-
-    private void TxtlvlKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TxtlvlKeyPressed
-   int key=evt.getKeyCode();// TODO add your handling code here:
-if ((key>=evt.VK_0&&key<=evt.VK_9)||(key>=evt.VK_NUMPAD0&&key<=evt.VK_NUMPAD9)||key==KeyEvent.VK_BACKSPACE){
-    Txtlvl.setEditable(true);
-    Txtlvl.setBackground(Color.green);
- 
-}
-else{
-     Txtlvl.setEditable(false);
-      JOptionPane.showMessageDialog(null, "يسمح بإدخال الأرقام فقط ", "Error",JOptionPane.ERROR_MESSAGE );
-}
-    }//GEN-LAST:event_TxtlvlKeyPressed
 
     private void Bmenu4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bmenu4ActionPerformed
  new addSubject().setVisible(true);
@@ -466,9 +481,9 @@ this.dispose();          // TODO add your handling code here:
     private javax.swing.JButton Bmenu4;
     private javax.swing.JButton Bmenu5;
     private javax.swing.JButton Bmenu6;
-    private javax.swing.JTextField TxtSub;
     private javax.swing.JTextField TxtTech;
-    private javax.swing.JTextField Txtlvl;
+    private javax.swing.JComboBox<String> coml;
+    private javax.swing.JComboBox<String> comsub;
     private javax.swing.JComboBox<String> da;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;

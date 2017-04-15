@@ -94,6 +94,7 @@ this.setVisible(true);
 
         emailF.setToolTipText("البريد الالكتروني");
 
+        signin.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         signin.setText("تسجيل الدخول");
         signin.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -143,7 +144,7 @@ this.setVisible(true);
         jPanel2.setBackground(new java.awt.Color(255, 204, 153));
 
         main.setBackground(new java.awt.Color(255, 204, 153));
-        main.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        main.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         main.setText("الرئيسية");
         main.setContentAreaFilled(false);
         main.addActionListener(new java.awt.event.ActionListener() {
@@ -167,8 +168,10 @@ this.setVisible(true);
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel1.setText("العام الدراسي");
 
+        jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel3.setText("المستوى");
 
         year.addActionListener(new java.awt.event.ActionListener() {
@@ -179,6 +182,7 @@ this.setVisible(true);
 
         level.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4" }));
 
+        go.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         go.setText("اذهب");
         go.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -219,7 +223,7 @@ this.setVisible(true);
                     .addComponent(level, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(36, 36, 36)
                 .addComponent(go)
-                .addContainerGap(202, Short.MAX_VALUE))
+                .addContainerGap(194, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
