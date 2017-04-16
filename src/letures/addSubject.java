@@ -24,6 +24,7 @@ public class addSubject extends javax.swing.JFrame {
      */
     String levl;
     String subject;
+String df;
     String teacher;
      int lvl;
      int d;
@@ -41,6 +42,7 @@ this.setVisible(true);
  fillLevel();
  fillDate();
  fillsub();
+ subtxt.setEnabled(false);
     }
     private void fillDate(){
         String j ,l;
@@ -90,10 +92,23 @@ this.setVisible(true);
         }
     }
 private void add(){
+     df=subtxt.getText();
+     if (df.isEmpty()){
+           subject=(String)comsub.getSelectedItem();
+     }
+     else{
+         subject=df;
+     }
     try
     {
-     
-        subject=(String)comsub.getSelectedItem();
+    String sql2="Select * from Subjects where SName like N'"+df+"'";
+        pst=con.prepareStatement(sql2);
+          rs=pst.executeQuery();
+          if(rs.next()){
+              JOptionPane.showMessageDialog(null, "المقرر موجود مسبقا", "ERROR",JOptionPane.NO_OPTION );
+                 subtxt.setText("");
+              subtxt.setEnabled(false);
+          } else{
              teacher=TxtTech.getText();
              
             year=(String)da.getSelectedItem();
@@ -114,10 +129,12 @@ comsub.setSelectedIndex(-1);
          TxtTech.setText("");
         da.setSelectedIndex(-1);
         coml.setSelectedIndex(-1);
+        subtxt.setText("");
+        subtxt.setEnabled(false);
 //          Txtlvl.setText("");
 //          
           //Txtlvl.setBackground(Color.white);
-    }
+    }}
     catch( SQLException ex ){
         JOptionPane.showMessageDialog(null, ex);
         
@@ -156,6 +173,8 @@ comsub.setSelectedIndex(-1);
         da = new javax.swing.JComboBox<>();
         coml = new javax.swing.JComboBox<>();
         comsub = new javax.swing.JComboBox<>();
+        addsub = new javax.swing.JButton();
+        subtxt = new javax.swing.JTextField();
         Bmenu4 = new javax.swing.JButton();
         Bmenu5 = new javax.swing.JButton();
         Bmenu6 = new javax.swing.JButton();
@@ -250,24 +269,39 @@ comsub.setSelectedIndex(-1);
 
         comsub.setToolTipText("");
 
+        addsub.setText("إضافه مقرر جديد");
+        addsub.setToolTipText("");
+        addsub.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addsubActionPerformed(evt);
+            }
+        });
+
+        subtxt.setToolTipText("");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(141, 141, 141)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(TxtTech, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(da, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(coml, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comsub, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(56, 56, 56)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(TxtTech, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(da, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(coml, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(subtxt, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(addsub)
+                        .addGap(46, 46, 46)
+                        .addComponent(comsub, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(jLabel3)
                     .addComponent(jLabel4)
                     .addComponent(jLabel5))
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addContainerGap(100, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -279,7 +313,9 @@ comsub.setSelectedIndex(-1);
                 .addGap(37, 37, 37)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comsub, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comsub, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addsub)
+                    .addComponent(subtxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TxtTech, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -294,7 +330,7 @@ comsub.setSelectedIndex(-1);
                     .addComponent(da, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(50, 50, 50)
                 .addComponent(jButton1)
-                .addContainerGap(122, Short.MAX_VALUE))
+                .addContainerGap(121, Short.MAX_VALUE))
         );
 
         Bmenu4.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
@@ -379,14 +415,13 @@ comsub.setSelectedIndex(-1);
  con=connection.ConnerDb();//to start connection
  
              teacher=TxtTech.getText();
-             
             //if(subject.equals("")&&teacher.equals("")&&Txtlvl.getText().equals("")){}
-           
-            if(teacher.equals("")&&comsub.getSelectedIndex()==-1&&teacher.isEmpty()&&coml.getSelectedIndex()==-1){
+           df=subtxt.getText();
+            if(teacher.equals("")&&teacher.isEmpty()&&coml.getSelectedIndex()==-1){
                 JOptionPane.showMessageDialog(null, "يرجى تعبئه الخانات اولا", "Error",JOptionPane.ERROR_MESSAGE );
             }else{
          
-            if (comsub.getSelectedIndex()==-1){
+            if (comsub.getSelectedIndex()==-1&&df.isEmpty()){
                 JOptionPane.showMessageDialog(null, "يرجى تعبئة خانة المقرر ", "Error",JOptionPane.ERROR_MESSAGE );
             }
             else if(teacher.isEmpty()){
@@ -441,6 +476,12 @@ this.dispose();          // TODO add your handling code here:
         // TODO add your handling code here:
     }//GEN-LAST:event_daActionPerformed
 
+    private void addsubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addsubActionPerformed
+subtxt.setEnabled(true); 
+subtxt.setText("");
+// TODO add your handling code here:
+    }//GEN-LAST:event_addsubActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -482,6 +523,7 @@ this.dispose();          // TODO add your handling code here:
     private javax.swing.JButton Bmenu5;
     private javax.swing.JButton Bmenu6;
     private javax.swing.JTextField TxtTech;
+    private javax.swing.JButton addsub;
     private javax.swing.JComboBox<String> coml;
     private javax.swing.JComboBox<String> comsub;
     private javax.swing.JComboBox<String> da;
@@ -505,5 +547,6 @@ this.dispose();          // TODO add your handling code here:
     private java.awt.Menu menu4;
     private java.awt.MenuBar menuBar1;
     private java.awt.MenuBar menuBar2;
+    private javax.swing.JTextField subtxt;
     // End of variables declaration//GEN-END:variables
 }
