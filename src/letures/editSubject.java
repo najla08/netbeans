@@ -24,7 +24,9 @@ public class editSubject extends javax.swing.JFrame {
     Connection con=null;
     ResultSet rs=null;
     PreparedStatement pst=null;
-     public int sid;
+     public static int sid;
+     public static String CheckSname;
+     public static String CheckYear;
     public editSubject(int id) {
         sid=id;
         
@@ -40,7 +42,11 @@ public class editSubject extends javax.swing.JFrame {
         String teach=rs.getString("Teacher");
         String ye=rs.getString("Year");
         int l=rs.getInt("Level");
-      
+        
+        //use them to check if the user change the name and the level or not
+        CheckSname=sname;
+        CheckYear=ye;
+        
         txtSub.setText(sname);
         TxtTech.setText(teach);
         da.setSelectedItem(ye);
@@ -388,15 +394,32 @@ public class editSubject extends javax.swing.JFrame {
             int level=Integer.parseInt((String)coml.getSelectedItem());
             
          try{
-         String sql=  "UPDATE Subjects SET SName =N'"+sname+"' ,Teacher=N'"+teacher+"',Year='"+ye+"',Level="+level+"  WHERE SID="+sid+"";
+            if(sname.equalsIgnoreCase(CheckSname)&&ye.equalsIgnoreCase(CheckYear)){
+          String sql=  "UPDATE Subjects SET SName =N'"+sname+"' ,Teacher=N'"+teacher+"',Year='"+ye+"',Level="+level+"  WHERE SID="+sid+"";
           pst=con.prepareStatement(sql);
          pst.executeUpdate();
        JOptionPane.showMessageDialog(null, "تم التعديل بنجاح");
         new SearchSubject().setVisible(true);
        this.dispose();
+            }else{
+                     String sql1="Select * From Subjects Where SName=N'"+sname+"' And Year='"+ye+"'";
+                   pst=con.prepareStatement(sql1);
+                  rs=pst.executeQuery();
+                   if(rs.isBeforeFirst()){
+                   JOptionPane.showMessageDialog(null, "المقرر لنفس العام الدراسي مكرر يرجى تغيير العام الدراسي أو اسم المقرر");  
+                   }else{
+   String sql=  "UPDATE Subjects SET SName =N'"+sname+"' ,Teacher=N'"+teacher+"',Year='"+ye+"',Level="+level+"  WHERE SID="+sid+"";
+          pst=con.prepareStatement(sql);
+         pst.executeUpdate();
+       JOptionPane.showMessageDialog(null, "تم التعديل بنجاح");
+        new SearchSubject().setVisible(true);
+       this.dispose();
+                   }
+            }
+
          }catch(Exception e){  JOptionPane.showMessageDialog(null, e); }
                 
-               
+            
             }//end else
             }//end if else 
             
