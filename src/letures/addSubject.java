@@ -170,15 +170,16 @@ comsub.setSelectedIndex(-1);
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        da = new javax.swing.JComboBox<>();
-        coml = new javax.swing.JComboBox<>();
-        comsub = new javax.swing.JComboBox<>();
+        da = new javax.swing.JComboBox<String>();
+        coml = new javax.swing.JComboBox<String>();
+        comsub = new javax.swing.JComboBox<String>();
         addsub = new javax.swing.JButton();
         subtxt = new javax.swing.JTextField();
         Bmenu4 = new javax.swing.JButton();
         Bmenu5 = new javax.swing.JButton();
         Bmenu6 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        editSubject = new javax.swing.JButton();
 
         menu1.setLabel("File");
         menuBar1.add(menu1);
@@ -301,7 +302,7 @@ comsub.setSelectedIndex(-1);
                     .addComponent(jLabel3)
                     .addComponent(jLabel4)
                     .addComponent(jLabel5))
-                .addContainerGap(100, Short.MAX_VALUE))
+                .addContainerGap(122, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -330,7 +331,7 @@ comsub.setSelectedIndex(-1);
                     .addComponent(da, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(50, 50, 50)
                 .addComponent(jButton1)
-                .addContainerGap(121, Short.MAX_VALUE))
+                .addContainerGap(123, Short.MAX_VALUE))
         );
 
         Bmenu4.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
@@ -365,15 +366,27 @@ comsub.setSelectedIndex(-1);
             }
         });
 
+        editSubject.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        editSubject.setText("تعديل/حذف مادة");
+        editSubject.setMaximumSize(new java.awt.Dimension(117, 23));
+        editSubject.setMinimumSize(new java.awt.Dimension(117, 23));
+        editSubject.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editSubjectActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 211, Short.MAX_VALUE)
+            .addComponent(editSubject, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 206, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(editSubject, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -482,6 +495,11 @@ subtxt.setText("");
 // TODO add your handling code here:
     }//GEN-LAST:event_addsubActionPerformed
 
+    private void editSubjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editSubjectActionPerformed
+        new editSubject().setVisible(true);
+        this.dispose();    
+    }//GEN-LAST:event_editSubjectActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -527,6 +545,7 @@ subtxt.setText("");
     private javax.swing.JComboBox<String> coml;
     private javax.swing.JComboBox<String> comsub;
     private javax.swing.JComboBox<String> da;
+    private javax.swing.JButton editSubject;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

@@ -32,11 +32,13 @@ public class listen extends javax.swing.JFrame {
      ResultSet rs=null;
      PreparedStatement pst=null;
      public static String Year;
-     public static String url2=null;
+     public static String url2;
      public static Media m;
      public static MediaPlayer mediaPlayer;
      public static String email;
      public static String pass;
+     public static String url;
+
 
 
      public static Integer Level;
@@ -58,7 +60,7 @@ this.setVisible(true);
 
         try{
             
-            String sql="select DISTINCT SName, SID from Subjects where Level='"+Level+"' AND Year='"+Year+"'";
+            String sql="select DISTINCT SName, SID from Subjects where Level='"+Level+"'";
             pst=con.prepareStatement(sql);
             rs=pst.executeQuery();
             
@@ -347,7 +349,7 @@ this.setVisible(true);
            if(rs.next()){
           Integer sid=rs.getInt(1);
             
-       String sql="SELECT [Subjects].[Teacher] as '"+b+"', Lecture.LName as '"+a+"', Lecture.LID as '"+i+"' FROM [Lectures].[dbo].[Lecture] INNER JOIN [Lectures].[dbo].[Subjects] ON Subjects.SID="+sid+" AND Lecture.SID="+sid+"";
+       String sql="SELECT [Subjects].[Teacher] as '"+b+"', Lecture.LName as '"+a+"', Lecture.LID as '"+i+"' FROM [Lectures].[dbo].[Lecture] INNER JOIN [Lectures].[dbo].[Subjects] ON Subjects.SID="+sid+" AND Lecture.SID="+sid+" AND Lecture.Year='"+Year+"'";
         pst=con.prepareStatement(sql);
         rs=pst.executeQuery();
        
@@ -372,7 +374,7 @@ this.setVisible(true);
               if(mediaPlayer!=null){
                            mediaPlayer.stop();
               }
-        String url;
+        
         int row=lectureInfo.getSelectedRow();
         int lecID;
         String id=(lectureInfo.getModel().getValueAt(row,2).toString());
@@ -417,10 +419,9 @@ this.setVisible(true);
     }//GEN-LAST:event_puseActionPerformed
 
     private void playActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playActionPerformed
-          if(mediaPlayer!=null){
-                           mediaPlayer.stop();
-              }
-        Play();
+      
+            Play();
+        
     }//GEN-LAST:event_playActionPerformed
 
     private void signinMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_signinMouseClicked

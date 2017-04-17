@@ -72,12 +72,10 @@
               <Component id="jLabel2" min="-2" pref="154" max="-2" attributes="0"/>
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                          <Component id="emailF" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="passf" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Component id="signin" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="signin" max="32767" attributes="0"/>
+                      <Component id="passf" alignment="0" max="32767" attributes="0"/>
+                      <Component id="emailF" alignment="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>
