@@ -19,102 +19,72 @@ import javax.swing.JOptionPane;
  */
 public class editSubject extends javax.swing.JFrame {
 
-    /**
-     * Creates new form listen
-     */
-    String levl;
-    String subject;
-String df;
-    String teacher;
-     int lvl;
-     int d;
+ 
     String year;
-     Connection con=null;
-     ResultSet rs=null;
-     PreparedStatement pst=null;
-     
-    public editSubject() {
+    Connection con=null;
+    ResultSet rs=null;
+    PreparedStatement pst=null;
+     public int sid;
+    public editSubject(int id) {
+        sid=id;
+        
         initComponents();
+        con=connection.ConnerDb();
+             fillDate();
+        try{
+         String sql="select SName,Teacher,Year,Level from [Lectures].[dbo].[Subjects] where SID="+sid+""; 
+        pst=con.prepareStatement(sql);
+        rs=pst.executeQuery();
+        rs.next();
+        String sname=rs.getString("SName");
+        String teach=rs.getString("Teacher");
+        String ye=rs.getString("Year");
+        int l=rs.getInt("Level");
+      
+        txtSub.setText(sname);
+        TxtTech.setText(teach);
+        da.setSelectedItem(ye);
+       
+        switch(l){
+            case 1: coml.setSelectedIndex(0);
+                break;
+                case 2: coml.setSelectedIndex(1);
+                                    break;
+                case 3: coml.setSelectedIndex(2);
+                                    break;
+                case 4: coml.setSelectedIndex(3);
+                                    break;
+        }
+       
+       
+        }catch(Exception e){
+                    JOptionPane.showMessageDialog(null, e);
 
- fillDate();
- fillsub();
+        }
+   
     }
     private void fillDate(){
-         String j ,l;
-        d=1437;
-        int n=0;
-        while(d!=1450){
-         n=d+1;
-        
-                    j = Integer.toString(d); 
-                    l=Integer.toString(n);
-            da.addItem(j+"-"+n);
-            d=d+1;
-        }
-    }
-    private void fillsub(){
-          try{
-            con=connection.ConnerDb();
-          
-            String sql="select DISTINCT SName from Subjects";
+         try{
+            String sql="select DISTINCT Year from Subjects";
             pst=con.prepareStatement(sql);
             rs=pst.executeQuery();
            
             if(rs.isBeforeFirst()){
                 while(rs.next())
             {
-                String SubName=rs.getString("SName");
-                comsub.addItem(SubName);          
+                String years=rs.getString("Year");
+                da.addItem(years);          
             }//end while-loop   
             }else{
-                comsub.addItem("لا يوجد اتصال بقاعدة البيانات");
+                da.addItem("لا يوجد اتصال بقاعدة البيانات");
             }
-            
-        
+         
         }//end try
         catch(Exception e)
         {
             JOptionPane.showMessageDialog(null, e);
         }
     }
-private void add(){
-  
-    try
-    {
-    String sql2="Select * from Subjects where SName like N'"+df+"'";
-        pst=con.prepareStatement(sql2);
-          rs=pst.executeQuery();
-          if(rs.next()){
-              JOptionPane.showMessageDialog(null, "المقرر موجود مسبقا", "ERROR",JOptionPane.NO_OPTION );
-               
-          } else{
-             teacher=TxtTech.getText();
-             
-            year=(String)da.getSelectedItem();
-         levl=(String)coml.getSelectedItem();
-         lvl= Integer.valueOf(levl);
-      String sql="insert into Subjects(SName,Teacher,Level)Values(?,?,?)";  
-      
-       pst=con.prepareStatement(sql);
-        pst.setString(1,subject);
-        pst.setString(2,teacher);
-       pst.setInt(3,lvl);
-//        pst.setString(4,year);
-         pst.executeUpdate();
-         con.close();
-          JOptionPane.showMessageDialog(null, "تم إدخال البيانات بنجاح", "",JOptionPane.NO_OPTION );
-comsub.setSelectedIndex(-1);
-
-         TxtTech.setText("");
-        da.setSelectedIndex(-1);
-        coml.setSelectedIndex(-1);
-
-    }}
-    catch( SQLException ex ){
-        JOptionPane.showMessageDialog(null, ex);
-        
-    }
-}
   
     /**
      * This method is called from within the constructor to initialize the form.
@@ -144,10 +114,11 @@ comsub.setSelectedIndex(-1);
         TxtTech = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        update = new javax.swing.JButton();
         da = new javax.swing.JComboBox<String>();
         coml = new javax.swing.JComboBox<String>();
-        comsub = new javax.swing.JComboBox<String>();
+        txtSub = new javax.swing.JTextField();
+        delete = new javax.swing.JButton();
         Bmenu4 = new javax.swing.JButton();
         Bmenu5 = new javax.swing.JButton();
         Bmenu6 = new javax.swing.JButton();
@@ -226,11 +197,11 @@ comsub.setSelectedIndex(-1);
         jLabel5.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel5.setText("العام الدراسي");
 
-        jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jButton1.setText("حفظ");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        update.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        update.setText("تعديل");
+        update.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                updateActionPerformed(evt);
             }
         });
 
@@ -243,7 +214,13 @@ comsub.setSelectedIndex(-1);
 
         coml.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4" }));
 
-        comsub.setToolTipText("");
+        delete.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        delete.setText("حذف");
+        delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -251,11 +228,11 @@ comsub.setSelectedIndex(-1);
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(86, 86, 86)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(TxtTech, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(TxtTech, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
                     .addComponent(da, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(coml, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comsub, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSub))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
@@ -265,7 +242,9 @@ comsub.setSelectedIndex(-1);
                 .addContainerGap(122, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(delete, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(update, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(248, 248, 248))
         );
         jPanel3Layout.setVerticalGroup(
@@ -274,7 +253,7 @@ comsub.setSelectedIndex(-1);
                 .addGap(37, 37, 37)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comsub, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSub, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TxtTech, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -288,7 +267,9 @@ comsub.setSelectedIndex(-1);
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(da, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(50, 50, 50)
-                .addComponent(jButton1)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(delete, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(update))
                 .addContainerGap(124, Short.MAX_VALUE))
         );
 
@@ -382,16 +363,16 @@ comsub.setSelectedIndex(-1);
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
  con=connection.ConnerDb();//to start connection
  
-             teacher=TxtTech.getText();
+             String teacher=TxtTech.getText();
             //if(subject.equals("")&&teacher.equals("")&&Txtlvl.getText().equals("")){}
             if(teacher.equals("")&&teacher.isEmpty()&&coml.getSelectedIndex()==-1){
                 JOptionPane.showMessageDialog(null, "يرجى تعبئه الخانات اولا", "Error",JOptionPane.ERROR_MESSAGE );
             }else{
          
-            if (comsub.getSelectedIndex()==-1&&df.isEmpty()){
+            if (txtSub.getText().isEmpty()){
                 JOptionPane.showMessageDialog(null, "يرجى تعبئة خانة المقرر ", "Error",JOptionPane.ERROR_MESSAGE );
             }
             else if(teacher.isEmpty()){
@@ -402,26 +383,31 @@ comsub.setSelectedIndex(-1);
                              }
            
             else{
-                add();
-            }}
-    
+            String sname=txtSub.getText();
+            String ye=da.getSelectedItem().toString();
+            int level=Integer.parseInt((String)coml.getSelectedItem());
             
-              
-    
-                   
-//                    else{
-//                         JOptionPane.showMessageDialog(null, "ممتاز ", "Error",JOptionPane.ERROR_MESSAGE );
-//                    }
+         try{
+         String sql=  "UPDATE Subjects SET SName =N'"+sname+"' ,Teacher=N'"+teacher+"',Year='"+ye+"',Level="+level+"  WHERE SID="+sid+"";
+          pst=con.prepareStatement(sql);
+         pst.executeUpdate();
+       JOptionPane.showMessageDialog(null, "تم التعديل بنجاح");
+        new SearchSubject().setVisible(true);
+       this.dispose();
+         }catch(Exception e){  JOptionPane.showMessageDialog(null, e); }
+                
+               
+            }//end else
+            }//end if else 
             
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_updateActionPerformed
 
     private void TxtTechActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtTechActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_TxtTechActionPerformed
 
     private void Bmenu4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bmenu4ActionPerformed
- new editSubject().setVisible(true);
-        this.dispose();        // TODO add your handling code here:
+ 
     }//GEN-LAST:event_Bmenu4ActionPerformed
 
     private void Bmenu5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bmenu5ActionPerformed
@@ -447,44 +433,35 @@ this.dispose();          // TODO add your handling code here:
     }//GEN-LAST:event_daActionPerformed
 
     private void editSubjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editSubjectActionPerformed
-        new edit().setVisible(true);
+        new SearchSubject().setVisible(true);
         this.dispose();    
     }//GEN-LAST:event_editSubjectActionPerformed
+
+    private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
+        
+          try{
+        String sql="DELETE FROM Lecture WHERE SID="+sid+"";
+         pst=con.prepareStatement(sql);
+         pst.execute();
+         sql="DELETE FROM Subjects WHERE SID="+sid+"";
+         pst=con.prepareStatement(sql);
+         pst.execute();
+
+       JOptionPane.showMessageDialog(null, "تم الحذف بنجاح");
+       new edit().setVisible(true);
+       this.dispose();
+       
+       }catch(Exception e){
+                   JOptionPane.showMessageDialog(null, e);
+
+       }
+    }//GEN-LAST:event_deleteActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(editSubject.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(editSubject.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(editSubject.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(editSubject.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new editSubject().setVisible(true);
-            }
-        });
+     
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -493,10 +470,9 @@ this.dispose();          // TODO add your handling code here:
     private javax.swing.JButton Bmenu6;
     private javax.swing.JTextField TxtTech;
     private javax.swing.JComboBox<String> coml;
-    private javax.swing.JComboBox<String> comsub;
     private javax.swing.JComboBox<String> da;
+    private javax.swing.JButton delete;
     private javax.swing.JButton editSubject;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -516,5 +492,7 @@ this.dispose();          // TODO add your handling code here:
     private java.awt.Menu menu4;
     private java.awt.MenuBar menuBar1;
     private java.awt.MenuBar menuBar2;
+    private javax.swing.JTextField txtSub;
+    private javax.swing.JButton update;
     // End of variables declaration//GEN-END:variables
 }

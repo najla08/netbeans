@@ -60,7 +60,7 @@ this.setVisible(true);
 
         try{
             
-            String sql="select DISTINCT SName, SID from Subjects where Level='"+Level+"'";
+            String sql="select DISTINCT SName, SID from Subjects where Level='"+Level+"' AND Year='"+Year+"'";
             pst=con.prepareStatement(sql);
             rs=pst.executeQuery();
             
@@ -349,7 +349,7 @@ this.setVisible(true);
            if(rs.next()){
           Integer sid=rs.getInt(1);
             
-       String sql="SELECT [Subjects].[Teacher] as '"+b+"', Lecture.LName as '"+a+"', Lecture.LID as '"+i+"' FROM [Lectures].[dbo].[Lecture] INNER JOIN [Lectures].[dbo].[Subjects] ON Subjects.SID="+sid+" AND Lecture.SID="+sid+" AND Lecture.Year='"+Year+"'";
+       String sql="SELECT [Subjects].[Teacher] as '"+b+"', Lecture.LName as '"+a+"', Lecture.LID as '"+i+"' FROM [Lectures].[dbo].[Lecture] INNER JOIN [Lectures].[dbo].[Subjects] ON Subjects.SID="+sid+" AND Subjects.Year='"+Year+"' AND Lecture.SID="+sid+"";
         pst=con.prepareStatement(sql);
         rs=pst.executeQuery();
        

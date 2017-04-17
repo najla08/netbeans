@@ -19,7 +19,7 @@ import net.proteanit.sql.DbUtils;
  *
  * @author Najla
  */
-public class edit extends javax.swing.JFrame {
+public class SearchSubject extends javax.swing.JFrame {
 
     /**
      * Creates new form listen
@@ -27,74 +27,17 @@ public class edit extends javax.swing.JFrame {
    
     Connection con=null;
      ResultSet rs=null;
-     ResultSet rs2=null;
      PreparedStatement pst=null;
-     PreparedStatement pst2=null;
-    public edit() {
+
+     public SearchSubject() {
         initComponents();
-        Bmenu3.setEnabled(false);
         con=connection.ConnerDb();//to start connection
         this.getContentPane().setPreferredSize(new Dimension(816, 558));//[816, 558]
     this.pack();
     setLocationRelativeTo(null);
 this.setVisible(true);
-//search();
-    }
-    private void tbl(){
-        try{
-          String subject=Txtsrch.getText();
-            String lName;
-            String col="المحاضرات";
-            String col2="العنوان المرجعي";
-      String sql="select LName AS'"+col+"',LID AS '"+col2+"' from Lecture where SID IN (select SID from Subjects where SName like N'%"+subject+"%' OR Teacher like N'%"+subject+"%');";  //"+subject+"
-      //String sql1="Select COUNT(*)A total from Lecture where SID IN (select SID from Subjects where SName like'g%' OR Year like '"+subject+"%');";
-       pst=con.prepareStatement(sql);
-      // pst2=con.prepareStatement(sql1);
-      // rs2=pst2.executeQuery();
-       rs=pst.executeQuery();
-       Tlec.setModel(DbUtils.resultSetToTableModel(rs));
-        }
-        catch( SQLException ex ){
-        JOptionPane.showMessageDialog(null, ex);
-        
-    }
-    }
-private void search(){
-     try
-    {
-        int count;
-         
-          String subject=Txtsrch.getText();
-            String lName;
-      String sql="select * from Lecture where SID IN (select SID from Subjects where SName like '"+subject+"%' OR Teacher like'"+subject+"%');";  //"+subject+"
-      String sql1="Select COUNT(*)AS total from Lecture where SID IN (select SID from Subjects where SName like '"+subject+"%' OR Teacher like'"+subject+"%');";
-       pst=con.prepareStatement(sql);
-       pst2=con.prepareStatement(sql1);
-       rs2=pst2.executeQuery();
-       rs=pst.executeQuery();
-       int i=0;
-       if(rs2.next()){
-            count=rs2.getInt("total");
-            while(rs.next())
-            {
-         
-                 lName=rs.getString("LName");              
-//                  LblLec.setText(lName);
-                  
-                  i++;
-            }//end while-loop   
-       }
-//      JLabel[] LblLec=new JLabel[]; 
-       
-//         pst.executeUpdate();
-            
-         
-    }
-    catch( SQLException ex ){
-        JOptionPane.showMessageDialog(null, ex);
-        
-    }
-}
+
+     }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -118,7 +61,7 @@ private void search(){
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         Txtsrch = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        search = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         LblLec = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -177,11 +120,11 @@ private void search(){
             }
         });
 
-        jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jButton1.setText("بحث");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        search.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        search.setText("بحث");
+        search.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                searchActionPerformed(evt);
             }
         });
 
@@ -194,11 +137,11 @@ private void search(){
 
             },
             new String [] {
-                "المحاضرات", "العنوان المرجعي"
+                "العام الدراسي", "المقرر", "العنوان المرجعي"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -221,7 +164,7 @@ private void search(){
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(195, 195, 195)
-                .addComponent(jButton1)
+                .addComponent(search)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Txtsrch, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -244,7 +187,7 @@ private void search(){
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Txtsrch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(search))
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(227, 227, 227)
@@ -319,6 +262,8 @@ private void search(){
 
         jButton2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton2.setText("تعديل/حذف مادة");
+        jButton2.setMaximumSize(new java.awt.Dimension(117, 23));
+        jButton2.setMinimumSize(new java.awt.Dimension(117, 23));
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -337,7 +282,7 @@ private void search(){
                     .addComponent(Bmenu2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(Bmenu3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(170, 170, 170)
+                        .addGap(79, 79, 79)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -356,7 +301,7 @@ private void search(){
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Bmenu3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -369,26 +314,39 @@ private void search(){
         // TODO add your handling code here:
     }//GEN-LAST:event_TxtsrchActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-//to start connection
-//search();// TODO add your handling code here:
+    private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
+
 if(Txtsrch.getText().isEmpty()){
     JOptionPane.showMessageDialog(null, "يرجى تعبئه خانه البحث", "Error",JOptionPane.ERROR_MESSAGE );
 }else{
     con=connection.ConnerDb();
-    tbl();
+        try{
+          String subject=Txtsrch.getText();
+            String col="المقرر";
+            String col2="العام الدراسي";
+            String col3="العنوان المرجعي";
+      String sql="select Year AS '"+col2+"',SName AS'"+col+"',SID AS'"+col3+"' from Subjects where SName like N'%"+subject+"%'"; 
+       pst=con.prepareStatement(sql);
+    
+       rs=pst.executeQuery();
+       Tlec.setModel(DbUtils.resultSetToTableModel(rs));
+        }
+        catch( SQLException ex ){
+        JOptionPane.showMessageDialog(null, ex);
+        
+    }
 }
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_searchActionPerformed
 
     private void TlecMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TlecMouseClicked
   
         
         int row=Tlec.getSelectedRow();
        
-        String id=(Tlec.getModel().getValueAt(row,1).toString());
-        int lecID=Integer.parseInt(id);
-        new editLecture(lecID).setVisible(true);
+        String id=(Tlec.getModel().getValueAt(row,2).toString());
+        int subid=Integer.parseInt(id);
+        new editSubject(subid).setVisible(true);
         this.dispose();
       
 
@@ -396,7 +354,7 @@ if(Txtsrch.getText().isEmpty()){
 
     private void Bmenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bmenu3ActionPerformed
 
-        new edit().setVisible(true);
+        new SearchSubject().setVisible(true);
         this.dispose();
         
     }//GEN-LAST:event_Bmenu3ActionPerformed
@@ -420,7 +378,7 @@ this.dispose();         // TODO add your handling code here:
     }//GEN-LAST:event_logoutActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-         new SearchSubject().setVisible(true);
+ new SearchSubject().setVisible(true);
         this.dispose();  
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -441,13 +399,13 @@ this.dispose();         // TODO add your handling code here:
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(edit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SearchSubject.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(edit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SearchSubject.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(edit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SearchSubject.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(edit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SearchSubject.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -457,7 +415,7 @@ this.dispose();         // TODO add your handling code here:
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new edit().setVisible(true);
+                new SearchSubject().setVisible(true);
                 
             }
         });
@@ -470,7 +428,6 @@ this.dispose();         // TODO add your handling code here:
     private javax.swing.JLabel LblLec;
     private javax.swing.JTable Tlec;
     private javax.swing.JTextField Txtsrch;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
@@ -490,5 +447,6 @@ this.dispose();         // TODO add your handling code here:
     private java.awt.Menu menu4;
     private java.awt.MenuBar menuBar1;
     private java.awt.MenuBar menuBar2;
+    private javax.swing.JButton search;
     // End of variables declaration//GEN-END:variables
 }
