@@ -60,7 +60,7 @@ this.setVisible(true);
 
         try{
             
-            String sql="select DISTINCT SName, SID from Subjects where Level='"+Level+"' AND Year='"+Year+"'";
+            String sql="select SName, SID from Subjects where Level='"+Level+"' AND Year='"+Year+"'";
             pst=con.prepareStatement(sql);
             rs=pst.executeQuery();
             
